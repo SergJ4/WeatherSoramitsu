@@ -1,0 +1,73 @@
+ext {
+    ver = [
+            android           : "3.2.0",
+            kotlin            : "1.2.71",
+            anko              : "0.10.4",
+            support           : "1.0.0",
+            rxjava2           : "2.1.8",
+            rxandroid2        : "2.1.0",
+            constraintLayout  : "2.0.0-alpha2",
+            rxpermissions     : "0.9.5@aar",
+            retrofit          : "2.3.0",
+            ciceroneNavigator : "2.1.0",
+            timber            : "4.6.0",
+            gson              : "2.8.2",
+            okhttp3           : "3.9.1",
+            recyclerAdapter   : "5.1.0",
+            glide             : "4.8.0",
+            kodein            : "5.3.0",
+    ]
+
+    //Version
+    plugin = [
+            android : "com.android.tools.build:gradle:$ver.android",
+            kotlin  : "org.jetbrains.kotlin:kotlin-gradle-plugin:$ver.kotlin",
+    ]
+
+    dep = [
+            support            : [
+                    appCompat       : "androidx.appcompat:appcompat:$ver.support",
+                    design          : "com.google.android.material:material:$ver.support",
+                    constraintLayout: "androidx.constraintlayout:constraintlayout:$ver.constraintLayout",
+                    annotations     : "androidx.annotation:annotation:$ver.support",
+                    v13             : "androidx.legacy:legacy-support-v13:$ver.support",
+            ],
+
+            rxjava2            : [
+                    lib           : "io.reactivex.rxjava2:rxjava:$ver.rxjava2",
+                    android       : "io.reactivex.rxjava2:rxandroid:$ver.rxandroid2",
+                    permissions   : "com.tbruyelle.rxpermissions2:rxpermissions:$ver.rxpermissions",
+            ],
+
+            kotlin             : [
+                    lib         : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$ver.kotlin",
+                    anko_commons: "org.jetbrains.anko:anko-commons:$ver.anko",
+                    anko_design : "org.jetbrains.anko:anko-design:$ver.anko",
+                    extensions  : "org.jetbrains.kotlin:kotlin-android-extensions-runtime:$ver.kotlin"
+            ],
+
+            ciceroneNavigator  : "ru.terrakok.cicerone:cicerone:$ver.ciceroneNavigator",
+
+            timber             : "com.jakewharton.timber:timber:$ver.timber",
+
+            gson               : "com.google.code.gson:gson:$ver.gson",
+
+            recyclerAdapter    : "eu.davidea:flexible-adapter:$ver.recyclerAdapter",
+
+            retrofit           : [
+                    lib           : "com.squareup.retrofit2:retrofit:$ver.retrofit",
+                    gson_converter: "com.squareup.retrofit2:converter-gson:$ver.retrofit",
+                    rxjava_adapter: "com.squareup.retrofit2:adapter-rxjava2:$ver.retrofit"
+            ],
+
+            glide              : [
+                    lib        : "com.github.bumptech.glide:glide:$ver.glide",
+                    annotations: "com.github.bumptech.glide:compiler:$ver.glide",
+            ],
+
+            kodein             : [
+                    lib    : "org.kodein.di:kodein-di-generic-jvm:$ver.kodein",
+                    android: "org.kodein.di:kodein-di-framework-android-x:$ver.kodein"
+            ]
+    ]
+}
