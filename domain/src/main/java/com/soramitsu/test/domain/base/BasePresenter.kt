@@ -1,13 +1,11 @@
 package com.soramitsu.test.domain.base
 
-import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.soramitsu.test.domain.interfaces.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
 
-@InjectViewState
 abstract class BasePresenter<V : BaseView>(override val kodein: Kodein) : MvpPresenter<V>(),
     KodeinAware {
 

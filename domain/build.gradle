@@ -12,7 +12,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
 
@@ -34,12 +34,17 @@ kapt {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation dep.support.design
+    implementation dep.support.appCompat
+
     implementation dep.kotlin.lib
+    implementation dep.kotlin.anko_commons
 
     implementation dep.kodein.lib
     implementation dep.kodein.android
 
     implementation dep.rxjava2.lib
     implementation dep.moxy.lib
+    implementation dep.moxy.android
     kapt dep.moxy.compiler
 }

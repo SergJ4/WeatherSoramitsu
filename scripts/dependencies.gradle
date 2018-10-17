@@ -3,7 +3,7 @@ ext {
             android           : "3.2.1",
             kotlin            : "1.2.71",
             anko              : "0.10.4",
-            support           : "1.0.0",
+            support           : "28.0.0",
             rxjava2           : "2.2.2",
             rxandroid2        : "2.1.0",
             constraintLayout  : "2.0.0-alpha2",
@@ -27,11 +27,10 @@ ext {
 
     dep = [
             support            : [
-                    appCompat       : "androidx.appcompat:appcompat:$ver.support",
-                    design          : "com.google.android.material:material:$ver.support",
-                    constraintLayout: "androidx.constraintlayout:constraintlayout:$ver.constraintLayout",
-                    annotations     : "androidx.annotation:annotation:$ver.support",
-                    v13             : "androidx.legacy:legacy-support-v13:$ver.support",
+                    appCompat       : "com.android.support:appcompat-v7:$ver.support",
+                    design          : "com.android.support:design:$ver.support",
+                    constraintLayout: "com.android.support.constraint:constraint-layout:$ver.constraintLayout",
+                    v13             : "com.android.support:support-v13:$ver.support",
             ],
 
             rxjava2            : [
@@ -68,11 +67,12 @@ ext {
 
             kodein             : [
                     lib    : "org.kodein.di:kodein-di-generic-jvm:$ver.kodein",
-                    android: "org.kodein.di:kodein-di-framework-android-x:$ver.kodein"
+                    android: "org.kodein.di:kodein-di-framework-android-support:$ver.kodein"
             ],
 
             moxy               : [
                     lib        : "com.arello-mobile:moxy:$ver.moxy",
+                    android    : "com.arello-mobile:moxy-app-compat:$ver.moxy",
                     compiler   : "com.arello-mobile:moxy-compiler:$ver.moxy"
             ]
     ]
