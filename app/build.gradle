@@ -12,7 +12,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -25,7 +25,15 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation project(path: ':domain')
+    implementation project(path: ':repository')
+
+    implementation dep.support.appCompat
+
     implementation dep.kotlin.lib
     implementation dep.kodein.lib
     implementation dep.kodein.android
+
+    implementation dep.ciceroneNavigator
+    implementation dep.rxjava2.lib
 }

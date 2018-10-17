@@ -13,7 +13,6 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -22,12 +21,15 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "../proguard-rules/main.pro"
         }
     }
-
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation project(path: ':domain')
+
     implementation dep.kotlin.lib
     implementation dep.rxjava2.lib
+    implementation dep.glide.lib
+    kapt dep.glide.annotations
 }
