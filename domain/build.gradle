@@ -25,9 +25,21 @@ android {
 
 }
 
+kapt {
+    arguments {
+        arg("moxyReflectorPackage", "com.soramitsu.test.domain")
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation dep.kotlin.lib
+
+    implementation dep.kodein.lib
+    implementation dep.kodein.android
+
     implementation dep.rxjava2.lib
+    implementation dep.moxy.lib
+    kapt dep.moxy.compiler
 }

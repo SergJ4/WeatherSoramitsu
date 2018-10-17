@@ -1,11 +1,13 @@
 package com.soramitsu.test.domain.interfaces
 
-import android.view.View
+import io.reactivex.Observable
 
 
 interface ProgressBus {
 
-    fun showProgress(shouldShow: Boolean)
+    fun show()
 
-    fun attachView(view: View?)
+    fun hide()
+
+    fun listen(): Observable<Boolean>
 }

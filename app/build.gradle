@@ -1,7 +1,5 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -31,9 +29,13 @@ dependencies {
     implementation dep.support.appCompat
 
     implementation dep.kotlin.lib
+
     implementation dep.kodein.lib
     implementation dep.kodein.android
 
     implementation dep.ciceroneNavigator
     implementation dep.rxjava2.lib
+
+    implementation dep.moxy.lib
+    kapt dep.moxy.compiler
 }

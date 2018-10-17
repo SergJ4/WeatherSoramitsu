@@ -1,13 +1,10 @@
 package com.soramitsu.test.domain.interfaces
 
-import android.view.View
-
+import io.reactivex.Observable
 
 interface MessageBus {
 
-    var anchorView: View?
-
     fun showMessage(message: String = "", resId: Int = -1)
 
-    fun showMessage(exception: Throwable)
+    fun listen(): Observable<String>
 }

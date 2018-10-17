@@ -16,6 +16,7 @@ ext {
             recyclerAdapter   : "5.1.0",
             glide             : "4.8.0",
             kodein            : "5.3.0",
+            moxy              : "1.5.5"
     ]
 
     //Version
@@ -68,6 +69,11 @@ ext {
             kodein             : [
                     lib    : "org.kodein.di:kodein-di-generic-jvm:$ver.kodein",
                     android: "org.kodein.di:kodein-di-framework-android-x:$ver.kodein"
+            ],
+
+            moxy               : [
+                    lib        : "com.arello-mobile:moxy:$ver.moxy",
+                    compiler   : "com.arello-mobile:moxy-compiler:$ver.moxy"
             ]
     ]
 }
