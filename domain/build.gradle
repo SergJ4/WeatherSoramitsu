@@ -44,6 +44,7 @@ dependencies {
     implementation dep.kodein.android
 
     implementation dep.rxjava2.lib
+    implementation dep.rxjava2.android
     implementation dep.moxy.lib
     implementation dep.moxy.android
     kapt dep.moxy.compiler

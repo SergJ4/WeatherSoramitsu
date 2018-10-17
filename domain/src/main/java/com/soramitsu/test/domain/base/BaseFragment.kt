@@ -1,7 +1,12 @@
 package com.soramitsu.test.domain.base
 
+import android.os.Bundle
+import android.support.annotation.LayoutRes
 import android.support.design.widget.Snackbar
 import android.support.v4.widget.SwipeRefreshLayout
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.soramitsu.test.domain.R
@@ -23,10 +28,19 @@ abstract class BaseFragment<P : BasePresenter<*>> : MvpAppCompatFragment(), Base
 
     lateinit var presenter: P
 
+    @get:LayoutRes
+    protected abstract val layoutRes: Int
+
     @ProvidePresenter
     inline fun <reified P : BasePresenter<*>> providePresenter(): P = kodein.direct.instance()
 
     abstract fun module(): Kodein.Module
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? = inflater.inflate(layoutRes, container, false)
 
     override fun showProgress() {
         view?.findOptional<SwipeRefreshLayout>(R.id.swipeRefresh)

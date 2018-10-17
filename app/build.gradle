@@ -35,6 +35,7 @@ dependencies {
 
     implementation dep.ciceroneNavigator
     implementation dep.rxjava2.lib
+    implementation dep.timber
 
     implementation dep.moxy.lib
     kapt dep.moxy.compiler

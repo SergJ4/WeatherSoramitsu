@@ -1,5 +1,8 @@
 package com.soramitsu.test.domain.base
 
+import android.os.Bundle
+import android.os.PersistableBundle
+import android.support.annotation.LayoutRes
 import android.support.design.widget.Snackbar
 import android.support.v4.widget.SwipeRefreshLayout
 import com.arellomobile.mvp.MvpAppCompatActivity
@@ -25,10 +28,18 @@ abstract class BaseActivity<P : BasePresenter<*>> : MvpAppCompatActivity(), Base
 
     lateinit var presenter: P
 
+    @get:LayoutRes
+    protected abstract val layoutRes: Int
+
     @ProvidePresenter
     inline fun <reified P : BasePresenter<*>> providePresenter(): P = kodein.direct.instance()
 
     abstract fun module(): Kodein.Module
+
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
+        setContentView(layoutRes)
+    }
 
     override fun showProgress() {
         findOptional<SwipeRefreshLayout>(R.id.swipeRefresh)
