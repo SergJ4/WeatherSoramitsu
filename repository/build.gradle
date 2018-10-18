@@ -32,4 +32,18 @@ dependencies {
     implementation dep.rxjava2.lib
     implementation dep.glide.lib
     kapt dep.glide.annotations
+
+    implementation dep.kodein.lib
+    implementation dep.kodein.android
+
+    implementation dep.room.lib
+    implementation dep.room.rx
+    kapt dep.room.compiler
+
+    implementation dep.gson
+
+    implementation dep.retrofit.lib
+    implementation dep.retrofit.gson_converter
+    implementation dep.retrofit.rxjava_adapter
+    implementation dep.retrofit.interceptor
 }

@@ -1,2 +1,3 @@
 <resources>
+    <string name="unknown_error">Unknown error happened, please try later</string>
 </resources>

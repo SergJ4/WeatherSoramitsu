@@ -3,6 +3,7 @@ package com.soramitsu.test.weathersoramitsu
 import android.content.Context
 import com.soramitsu.test.domain.interfaces.ImageLoader
 import com.soramitsu.test.repository.ImageLoaderImpl
+import com.soramitsu.test.repository.repositoryModule
 import io.reactivex.disposables.CompositeDisposable
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
@@ -23,4 +24,6 @@ fun appModule(appContext: Context) = Kodein.Module(name = "AppModule") {
     bind<ImageLoader>() with singleton { ImageLoaderImpl() }
 
     bind<CompositeDisposable>() with provider { CompositeDisposable() }
+
+    import(repositoryModule)
 }
