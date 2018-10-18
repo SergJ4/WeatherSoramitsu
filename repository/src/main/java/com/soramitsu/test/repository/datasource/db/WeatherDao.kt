@@ -6,6 +6,7 @@ import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import com.soramitsu.test.repository.model.db.*
 import io.reactivex.Flowable
+import io.reactivex.Single
 
 @Dao
 interface WeatherDao {
@@ -21,4 +22,7 @@ interface WeatherDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addCities(vararg cities: City)
+
+    @Query("SELECT * FROM $CITY_TABLE")
+    fun getAllCities(): Single<List<City>>
 }

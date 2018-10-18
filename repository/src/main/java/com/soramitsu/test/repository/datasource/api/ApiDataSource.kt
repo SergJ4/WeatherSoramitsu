@@ -1,9 +1,11 @@
 package com.soramitsu.test.repository.datasource.api
 
 import android.content.Context
+import com.soramitsu.test.domain.exceptions.SimpleMessageException
 import com.soramitsu.test.repository.R
 import com.soramitsu.test.repository.model.api.ApiCurrentWeatherResponse
 import com.soramitsu.test.repository.model.api.ApiForecastWeatherResponse
+import com.soramitsu.test.repository.model.db.City
 import io.reactivex.Single
 import java.util.*
 
@@ -21,9 +23,28 @@ class ApiDataSource(private val weatherApi: WeatherApi, context: Context) {
             apiKey
         )
 
-    fun fetchForecastWeather(cityName: String): Single<ApiForecastWeatherResponse> =
-        weatherApi.fetchForecastWeatherForCityName(
+    fun fetchForecastWeather(
+        cityName: String = "",
+        cityId: Long = -1
+    ): Single<ApiForecastWeatherResponse> = when {
+        cityName.isNotBlank() -> weatherApi.fetchForecastWeatherForCityName(
             cityName,
+            defineLanguage(),
+            DEFAULT_MEASURE_UNITS,
+            apiKey
+        )
+        cityId > -1 -> weatherApi.fetchForecastWeatherForCityId(
+            cityId,
+            defineLanguage(),
+            DEFAULT_MEASURE_UNITS,
+            apiKey
+        )
+        else -> Single.error(SimpleMessageException(exceptionMessage = "Illegal request"))
+    }
+
+    fun fetchCurrentWeatherForAll(cities: List<City>): Single<List<ApiCurrentWeatherResponse>> =
+        weatherApi.fetchCurrentWeatherForMultipleCities(
+            cities.joinToString(separator = ",") { it.id.toString() },
             defineLanguage(),
             DEFAULT_MEASURE_UNITS,
             apiKey

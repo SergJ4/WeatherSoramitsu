@@ -29,6 +29,7 @@ data class WeatherForecast(
 
     @TypeConverters(ForecastDayConverter::class)
     @ColumnInfo(name = FORECAST_DAY_COLUMN)
+    @PrimaryKey
     val forDay: ForecastDay,
 
     @ColumnInfo(name = FORECAST_DESCRIPTION_COLUMN)
@@ -50,6 +51,7 @@ data class WeatherForecast(
     val icon: String,
 
     @ColumnInfo(name = FORECAST_CITY_ID_COLUMN)
+    @PrimaryKey
     val forCityId: Long
 ) {
 

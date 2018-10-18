@@ -12,6 +12,6 @@ data class ApiForecastWeather(
 
     val wind: ApiWind,
 
-    @SerializedName("dt_txt")
-    val dateString: String
+    @SerializedName("dt")
+    val timestamp: Long
 )

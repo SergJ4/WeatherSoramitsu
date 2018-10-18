@@ -13,6 +13,7 @@ const val UNITS_QUERY_PARAM = "units"
 const val APP_KEY_QUERY_PARAM = "appid"
 
 const val CURRENT_WEATHER_PATH = "weather"
+const val CURRENT_WEATHER_FOR_MULTIPLE_CITIES = "group"
 const val FORECAST_WEATHER_PATH = "forecast"
 
 interface WeatherApi {
@@ -43,9 +44,17 @@ interface WeatherApi {
 
     @GET(FORECAST_WEATHER_PATH)
     fun fetchForecastWeatherForCityId(
-        @Query(CITY_ID_QUERY_PARAM) cityId: String,
+        @Query(CITY_ID_QUERY_PARAM) cityId: Long,
         @Query(LANG_QUERY_PARAM) languageCode: String,
         @Query(UNITS_QUERY_PARAM) measureUnits: String,
         @Query(APP_KEY_QUERY_PARAM) appKey: String
     ): Single<ApiForecastWeatherResponse>
+
+    @GET(CURRENT_WEATHER_FOR_MULTIPLE_CITIES)
+    fun fetchCurrentWeatherForMultipleCities(
+        @Query(CITY_ID_QUERY_PARAM) ids: String,
+        @Query(LANG_QUERY_PARAM) languageCode: String,
+        @Query(UNITS_QUERY_PARAM) measureUnits: String,
+        @Query(APP_KEY_QUERY_PARAM) appKey: String
+    ): Single<List<ApiCurrentWeatherResponse>>
 }

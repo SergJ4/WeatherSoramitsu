@@ -1,7 +1,10 @@
 package com.soramitsu.test.repository.model.api
 
+import com.google.gson.annotations.SerializedName
+
 data class ApiWeatherAdditionalInfo(
-    val id: Int,
+    @SerializedName("id")
+    val weatherCode: Int,
     val description: String,
     val icon: String
 )

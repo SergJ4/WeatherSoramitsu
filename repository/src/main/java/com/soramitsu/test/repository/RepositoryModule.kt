@@ -55,7 +55,13 @@ class RepositoryModule(private val appContext: Context) {
         bind<WeatherDao>() with singleton { instance<WeatherDb>().weatherDao() }
         bind<DbDataSource>() with singleton { DbDataSource(instance()) }
 
-        bind<WeatherRepository>() with singleton { WeatherRepository(instance(), instance()) }
+        bind<WeatherRepository>() with singleton {
+            WeatherRepository(
+                instance(),
+                instance(),
+                instance()
+            )
+        }
     }
 
     private fun createRetrofit(appContext: Context, logger: Logger): Retrofit {

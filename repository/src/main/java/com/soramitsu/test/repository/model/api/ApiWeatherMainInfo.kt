@@ -6,6 +6,6 @@ data class ApiWeatherMainInfo(
     @SerializedName("temp")
     val temperature: Float,
 
-    val pressure: Int,
+    val pressure: Float,
     val humidity: Float
 )
