@@ -13,6 +13,7 @@ data class City(
     @PrimaryKey
     @ColumnInfo(name = CITY_ID_COLUMN)
     val id: Long,
+
     @ColumnInfo(name = CITY_NAME_COLUMN)
     val name: String
 )

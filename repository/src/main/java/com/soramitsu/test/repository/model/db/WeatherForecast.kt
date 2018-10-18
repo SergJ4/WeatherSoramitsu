@@ -29,7 +29,7 @@ data class WeatherForecast(
 
     @TypeConverters(ForecastDayConverter::class)
     @ColumnInfo(name = FORECAST_DAY_COLUMN)
-    val forDay: Int,
+    val forDay: ForecastDay,
 
     @ColumnInfo(name = FORECAST_DESCRIPTION_COLUMN)
     val description: String,

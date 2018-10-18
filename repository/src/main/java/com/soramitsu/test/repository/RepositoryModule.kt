@@ -1,6 +1,8 @@
 package com.soramitsu.test.repository
 
+import android.arch.persistence.db.SupportSQLiteDatabase
 import android.arch.persistence.room.Room
+import android.arch.persistence.room.RoomDatabase
 import android.content.Context
 import com.soramitsu.test.domain.interfaces.Logger
 import com.soramitsu.test.repository.datasource.api.ApiDataSource
@@ -28,7 +30,7 @@ private const val NETWORK_TIMEOUT = 6 //seconds
 val repositoryModule = Kodein.Module("Repository module") {
     bind<Retrofit>() with singleton { createRetrofit(instance(), instance()) }
     bind<WeatherApi>() with singleton { instance<Retrofit>().create(WeatherApi::class.java) }
-    bind<ApiDataSource>() with singleton { ApiDataSource(instance()) }
+    bind<ApiDataSource>() with singleton { ApiDataSource(instance(), instance()) }
 
     bind<WeatherDb>() with singleton { createDatabase(instance()) }
     bind<WeatherDao>() with singleton { instance<WeatherDb>().weatherDao() }
@@ -66,4 +68,10 @@ private fun createRetrofit(appContext: Context, logger: Logger): Retrofit {
 
 private fun createDatabase(appContext: Context) = Room
     .databaseBuilder(appContext, WeatherDb::class.java, DB_NAME)
+    .addCallback(object : RoomDatabase.Callback() {
+        override fun onCreate(db: SupportSQLiteDatabase) {
+            super.onCreate(db)
+            //todo реализовать
+        }
+    })
     .build()

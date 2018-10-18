@@ -4,17 +4,17 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
-import com.soramitsu.test.repository.model.db.CITY_TABLE
-import com.soramitsu.test.repository.model.db.City
-import com.soramitsu.test.repository.model.db.CityWithWeather
-import com.soramitsu.test.repository.model.db.WeatherForecast
+import com.soramitsu.test.repository.model.db.*
 import io.reactivex.Flowable
 
 @Dao
 interface WeatherDao {
 
-    @Query("SELECT * from $CITY_TABLE")
+    @Query("SELECT * FROM $CITY_TABLE")
     fun getCititesAndWeather(): Flowable<CityWithWeather>
+
+    @Query("SELECT * FROM $CITY_TABLE WHERE $CITY_NAME_COLUMN LIKE :cityName")
+    fun getWeatherForCity(cityName: String): Flowable<CityWithWeather>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrUpdateWeather(weather: WeatherForecast)

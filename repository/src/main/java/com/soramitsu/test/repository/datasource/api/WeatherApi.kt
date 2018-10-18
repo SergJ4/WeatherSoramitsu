@@ -1,5 +1,8 @@
 package com.soramitsu.test.repository.datasource.api
 
+import com.soramitsu.test.repository.model.api.ApiCurrentWeatherResponse
+import com.soramitsu.test.repository.model.api.ApiForecastWeatherResponse
+import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -20,7 +23,7 @@ interface WeatherApi {
         @Query(LANG_QUERY_PARAM) languageCode: String,
         @Query(UNITS_QUERY_PARAM) measureUnits: String,
         @Query(APP_KEY_QUERY_PARAM) appKey: String
-    )
+    ): Single<ApiCurrentWeatherResponse>
 
     @GET(FORECAST_WEATHER_PATH)
     fun fetchForecastWeatherForCityName(
@@ -28,7 +31,7 @@ interface WeatherApi {
         @Query(LANG_QUERY_PARAM) languageCode: String,
         @Query(UNITS_QUERY_PARAM) measureUnits: String,
         @Query(APP_KEY_QUERY_PARAM) appKey: String
-    )
+    ): Single<ApiForecastWeatherResponse>
 
     @GET(CURRENT_WEATHER_PATH)
     fun fetchCurrentWeatherForCityId(
@@ -36,7 +39,7 @@ interface WeatherApi {
         @Query(LANG_QUERY_PARAM) languageCode: String,
         @Query(UNITS_QUERY_PARAM) measureUnits: String,
         @Query(APP_KEY_QUERY_PARAM) appKey: String
-    )
+    ): Single<ApiCurrentWeatherResponse>
 
     @GET(FORECAST_WEATHER_PATH)
     fun fetchForecastWeatherForCityId(
@@ -44,5 +47,5 @@ interface WeatherApi {
         @Query(LANG_QUERY_PARAM) languageCode: String,
         @Query(UNITS_QUERY_PARAM) measureUnits: String,
         @Query(APP_KEY_QUERY_PARAM) appKey: String
-    )
+    ): Single<ApiForecastWeatherResponse>
 }
