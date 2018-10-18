@@ -20,5 +20,5 @@ interface WeatherDao {
     fun insertOrUpdateWeather(weather: WeatherForecast)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addCity(newCity: City)
+    fun addCities(vararg cities: City)
 }

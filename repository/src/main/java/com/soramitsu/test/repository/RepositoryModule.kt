@@ -12,6 +12,7 @@ import com.soramitsu.test.repository.datasource.db.DB_NAME
 import com.soramitsu.test.repository.datasource.db.DbDataSource
 import com.soramitsu.test.repository.datasource.db.WeatherDao
 import com.soramitsu.test.repository.datasource.db.WeatherDb
+import com.soramitsu.test.repository.model.db.City
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.kodein.di.Kodein
@@ -27,51 +28,60 @@ private const val WEATHER_BASE_URL = "https://api.openweathermap.org/data/2.5/"
 private const val HTTP_LOG_TAG = "soramitsu_http"
 private const val NETWORK_TIMEOUT = 6 //seconds
 
-val repositoryModule = Kodein.Module("Repository module") {
-    bind<Retrofit>() with singleton { createRetrofit(instance(), instance()) }
-    bind<WeatherApi>() with singleton { instance<Retrofit>().create(WeatherApi::class.java) }
-    bind<ApiDataSource>() with singleton { ApiDataSource(instance(), instance()) }
+class RepositoryModule(private val appContext: Context) {
 
-    bind<WeatherDb>() with singleton { createDatabase(instance()) }
-    bind<WeatherDao>() with singleton { instance<WeatherDb>().weatherDao() }
-    bind<DbDataSource>() with singleton { DbDataSource(instance()) }
-
-    bind<WeatherRepository>() with singleton { WeatherRepository(instance(), instance()) }
-}
-
-private fun createRetrofit(appContext: Context, logger: Logger): Retrofit {
-    val okHttpBuilder = OkHttpClient.Builder()
-
-    val connectivityInterceptor = ConnectivityInterceptor(appContext)
-
-    okHttpBuilder.addInterceptor(connectivityInterceptor)
-    if (BuildConfig.DEBUG) {
-        val loggingInterceptor = HttpLoggingInterceptor { message ->
-            logger.logDebug(message, HTTP_LOG_TAG)
-        }
-            .setLevel(HttpLoggingInterceptor.Level.BODY)
-        okHttpBuilder.addInterceptor(loggingInterceptor)
+    private val weatherDb: WeatherDb by lazy {
+        Room
+            .databaseBuilder(appContext, WeatherDb::class.java, DB_NAME)
+            .addCallback(object : RoomDatabase.Callback() {
+                override fun onCreate(db: SupportSQLiteDatabase) {
+                    super.onCreate(db)
+                    weatherDb.weatherDao().addCities(
+                        City(524901, "Moscow"),
+                        City(498817, "Saint Petersburg")
+                    )
+                }
+            })
+            .build()
     }
 
-    okHttpBuilder.connectTimeout(NETWORK_TIMEOUT.toLong(), TimeUnit.SECONDS)
-    okHttpBuilder.readTimeout(NETWORK_TIMEOUT.toLong(), TimeUnit.SECONDS)
-    okHttpBuilder.writeTimeout(NETWORK_TIMEOUT.toLong(), TimeUnit.SECONDS)
+    val repositoryKodein = Kodein.Module("Repository module") {
 
-    return Retrofit
-        .Builder()
-        .baseUrl(WEATHER_BASE_URL)
-        .client(okHttpBuilder.build())
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-}
+        bind<Retrofit>() with singleton { createRetrofit(instance(), instance()) }
+        bind<WeatherApi>() with singleton { instance<Retrofit>().create(WeatherApi::class.java) }
+        bind<ApiDataSource>() with singleton { ApiDataSource(instance(), instance()) }
 
-private fun createDatabase(appContext: Context) = Room
-    .databaseBuilder(appContext, WeatherDb::class.java, DB_NAME)
-    .addCallback(object : RoomDatabase.Callback() {
-        override fun onCreate(db: SupportSQLiteDatabase) {
-            super.onCreate(db)
-            //todo реализовать
+        bind<WeatherDb>() with instance(weatherDb)
+        bind<WeatherDao>() with singleton { instance<WeatherDb>().weatherDao() }
+        bind<DbDataSource>() with singleton { DbDataSource(instance()) }
+
+        bind<WeatherRepository>() with singleton { WeatherRepository(instance(), instance()) }
+    }
+
+    private fun createRetrofit(appContext: Context, logger: Logger): Retrofit {
+        val okHttpBuilder = OkHttpClient.Builder()
+
+        val connectivityInterceptor = ConnectivityInterceptor(appContext)
+
+        okHttpBuilder.addInterceptor(connectivityInterceptor)
+        if (BuildConfig.DEBUG) {
+            val loggingInterceptor = HttpLoggingInterceptor { message ->
+                logger.logDebug(message, HTTP_LOG_TAG)
+            }
+                .setLevel(HttpLoggingInterceptor.Level.BODY)
+            okHttpBuilder.addInterceptor(loggingInterceptor)
         }
-    })
-    .build()
+
+        okHttpBuilder.connectTimeout(NETWORK_TIMEOUT.toLong(), TimeUnit.SECONDS)
+        okHttpBuilder.readTimeout(NETWORK_TIMEOUT.toLong(), TimeUnit.SECONDS)
+        okHttpBuilder.writeTimeout(NETWORK_TIMEOUT.toLong(), TimeUnit.SECONDS)
+
+        return Retrofit
+            .Builder()
+            .baseUrl(WEATHER_BASE_URL)
+            .client(okHttpBuilder.build())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+}
