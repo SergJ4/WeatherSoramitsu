@@ -1,4 +1,4 @@
-package com.soramitsu.test.domain.base
+package com.soramitsu.test.core.base
 
 import com.arellomobile.mvp.MvpPresenter
 import com.soramitsu.test.domain.interfaces.*

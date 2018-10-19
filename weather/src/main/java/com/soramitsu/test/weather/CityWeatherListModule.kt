@@ -1,6 +1,6 @@
 package com.soramitsu.test.weather
 
-import com.soramitsu.test.domain.base.SwipeRefresh
+import com.soramitsu.test.core.base.SwipeRefresh
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.singleton

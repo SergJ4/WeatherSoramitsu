@@ -5,8 +5,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
-import com.soramitsu.test.domain.base.BaseFragment
-import com.soramitsu.test.domain.base.SwipeRefresh
+import com.soramitsu.test.core.base.BaseFragment
+import com.soramitsu.test.core.base.SwipeRefresh
 import eu.davidea.flexibleadapter.FlexibleAdapter
 import kotlinx.android.synthetic.main.city_weather_list_layout.*
 import org.kodein.di.Kodein

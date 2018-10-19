@@ -1,7 +1,7 @@
-package com.soramitsu.test.weathersoramitsu.implementation
+package com.soramitsu.test.core.implementation
 
+import com.soramitsu.test.core.BuildConfig
 import com.soramitsu.test.domain.interfaces.Logger
-import com.soramitsu.test.weathersoramitsu.BuildConfig
 import timber.log.Timber
 
 class LoggerImpl : Logger {

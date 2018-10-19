@@ -1,8 +1,10 @@
 package com.soramitsu.test.weathersoramitsu
 
+import android.os.Bundle
+import android.os.PersistableBundle
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
-import com.soramitsu.test.domain.base.BaseActivity
+import com.soramitsu.test.core.base.BaseActivity
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
@@ -26,6 +28,12 @@ class MainActivity : BaseActivity(), MainView {
 
     @ProvidePresenter
     fun presenterProvider() = providePresenter<MainPresenter>()
+
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
+
+        presenter.handleNavigation(savedInstanceState)
+    }
 
     override fun onResume() {
         super.onResume()

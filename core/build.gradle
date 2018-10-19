@@ -1,18 +1,21 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 28
+
     defaultConfig {
-        applicationId "com.soramitsu.test.weathersoramitsu"
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -25,23 +28,21 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(path: ':domain')
-    implementation project(path: ':core')
-    implementation project(path: ':repository')
-    implementation project(path: ':weather')
 
+    implementation dep.support.design
     implementation dep.support.appCompat
 
     implementation dep.kotlin.lib
+    implementation dep.kotlin.anko_commons
 
     implementation dep.kodein.lib
     implementation dep.kodein.android
 
-    implementation dep.ciceroneNavigator
     implementation dep.rxjava2.lib
+    implementation dep.rxjava2.android
 
     implementation dep.timber
 
     implementation dep.moxy.lib
     implementation dep.moxy.android
-    kapt dep.moxy.compiler
 }

@@ -34,12 +34,6 @@ dependencies {
     implementation dep.kotlin.lib
     implementation dep.kotlin.anko_commons
 
-    implementation dep.kodein.lib
-    implementation dep.kodein.android
-
     implementation dep.rxjava2.lib
     implementation dep.rxjava2.android
-    implementation dep.moxy.lib
-    implementation dep.moxy.android
-    kapt dep.moxy.compiler
 }

@@ -1,7 +1,11 @@
-package com.soramitsu.test.weathersoramitsu.implementation
+package com.soramitsu.test.weathersoramitsu
 
+import android.support.v4.app.Fragment
 import com.soramitsu.test.domain.interfaces.Router
+import com.soramitsu.test.domain.interfaces.WEATHER_LIST_SCREEN
+import com.soramitsu.test.weather.CityWeatherListFragment
 import ru.terrakok.cicerone.Screen
+import ru.terrakok.cicerone.android.support.SupportAppScreen
 
 class RouterImpl(private val router: ru.terrakok.cicerone.Router) : Router {
 
@@ -15,6 +19,12 @@ class RouterImpl(private val router: ru.terrakok.cicerone.Router) : Router {
 
     private fun convertNameToScreen(screenName: String, data: Any?): Screen =
         when (screenName) {
+            WEATHER_LIST_SCREEN -> WeatherListScreen()
             else -> throw IllegalArgumentException("unknown screen name: $screenName")
         }
+}
+
+internal class WeatherListScreen() : SupportAppScreen() {
+
+    override fun getFragment(): Fragment = CityWeatherListFragment()
 }

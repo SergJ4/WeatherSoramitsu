@@ -1,6 +1,5 @@
 package com.soramitsu.test.repository
 
-import com.soramitsu.test.domain.base.Trigger
 import com.soramitsu.test.domain.exceptions.Error
 import com.soramitsu.test.domain.exceptions.NetworkConnectionError
 import com.soramitsu.test.domain.exceptions.NetworkErrorException
@@ -8,6 +7,7 @@ import com.soramitsu.test.domain.exceptions.RefreshDataError
 import com.soramitsu.test.domain.interfaces.Executor
 import com.soramitsu.test.domain.interfaces.WeatherRepository
 import com.soramitsu.test.domain.models.City
+import com.soramitsu.test.domain.models.Trigger
 import com.soramitsu.test.repository.datasource.api.ApiDataSource
 import com.soramitsu.test.repository.datasource.db.DbDataSource
 import com.soramitsu.test.repository.model.api.ApiCurrentWeatherResponse

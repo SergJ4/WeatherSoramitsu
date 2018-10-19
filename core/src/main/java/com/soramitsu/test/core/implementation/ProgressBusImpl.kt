@@ -1,4 +1,4 @@
-package com.soramitsu.test.weathersoramitsu.implementation
+package com.soramitsu.test.core.implementation
 
 import com.likemeal.domain.CachedField
 import com.soramitsu.test.domain.interfaces.ProgressBus

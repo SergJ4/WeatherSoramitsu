@@ -1,4 +1,4 @@
-package com.soramitsu.test.domain.base
+package com.soramitsu.test.core.base
 
 import android.os.Bundle
 import android.os.PersistableBundle

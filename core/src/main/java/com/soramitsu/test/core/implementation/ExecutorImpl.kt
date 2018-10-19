@@ -1,6 +1,6 @@
-package com.soramitsu.test.weathersoramitsu.implementation
+package com.soramitsu.test.core.implementation
 
-import com.soramitsu.test.domain.base.SchedulersProvider
+import com.soramitsu.test.core.base.SchedulersProvider
 import com.soramitsu.test.domain.interfaces.Executor
 import com.soramitsu.test.domain.interfaces.Logger
 import com.soramitsu.test.domain.interfaces.MessageBus
