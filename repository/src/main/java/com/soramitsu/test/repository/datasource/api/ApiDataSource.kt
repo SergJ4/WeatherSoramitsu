@@ -5,6 +5,7 @@ import com.soramitsu.test.domain.exceptions.SimpleMessageException
 import com.soramitsu.test.repository.R
 import com.soramitsu.test.repository.model.api.ApiCurrentWeatherResponse
 import com.soramitsu.test.repository.model.api.ApiForecastWeatherResponse
+import com.soramitsu.test.repository.model.api.ApiGroupedWeatherResponse
 import com.soramitsu.test.repository.model.db.City
 import io.reactivex.Single
 import java.util.*
@@ -42,7 +43,7 @@ class ApiDataSource(private val weatherApi: WeatherApi, context: Context) {
         else -> Single.error(SimpleMessageException(exceptionMessage = "Illegal request"))
     }
 
-    fun fetchCurrentWeatherForAll(cities: List<City>): Single<List<ApiCurrentWeatherResponse>> =
+    fun fetchCurrentWeatherForAll(cities: List<City>): Single<ApiGroupedWeatherResponse> =
         weatherApi.fetchCurrentWeatherForMultipleCities(
             cities.joinToString(separator = ",") { it.id.toString() },
             defineLanguage(),

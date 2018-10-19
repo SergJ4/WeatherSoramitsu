@@ -3,7 +3,7 @@ package com.soramitsu.test.weathersoramitsu
 import android.support.v4.app.Fragment
 import com.soramitsu.test.domain.interfaces.Router
 import com.soramitsu.test.domain.interfaces.WEATHER_LIST_SCREEN
-import com.soramitsu.test.weather.CityWeatherListFragment
+import com.soramitsu.test.weather.list.CityWeatherListFragment
 import ru.terrakok.cicerone.Screen
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 

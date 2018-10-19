@@ -3,7 +3,9 @@ package com.soramitsu.test.repository
 import android.arch.persistence.db.SupportSQLiteDatabase
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
+import android.content.ContentValues
 import android.content.Context
+import android.database.sqlite.SQLiteDatabase
 import com.soramitsu.test.domain.interfaces.Logger
 import com.soramitsu.test.repository.datasource.api.ApiDataSource
 import com.soramitsu.test.repository.datasource.api.ConnectivityInterceptor
@@ -12,7 +14,9 @@ import com.soramitsu.test.repository.datasource.db.DB_NAME
 import com.soramitsu.test.repository.datasource.db.DbDataSource
 import com.soramitsu.test.repository.datasource.db.WeatherDao
 import com.soramitsu.test.repository.datasource.db.WeatherDb
-import com.soramitsu.test.repository.model.db.City
+import com.soramitsu.test.repository.model.db.CITY_ID_COLUMN
+import com.soramitsu.test.repository.model.db.CITY_NAME_COLUMN
+import com.soramitsu.test.repository.model.db.CITY_TABLE
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.kodein.di.Kodein
@@ -25,6 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 private const val WEATHER_BASE_URL = "https://api.openweathermap.org/data/2.5/"
+const val WEATHER_ICON_URL = "http://openweathermap.org/img/w/"
 private const val HTTP_LOG_TAG = "soramitsu_http"
 private const val NETWORK_TIMEOUT = 6 //seconds
 
@@ -36,10 +41,16 @@ class RepositoryModule(private val appContext: Context) {
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
-                    weatherDb.weatherDao().addCities(
-                        City(524901, "Moscow"),
-                        City(498817, "Saint Petersburg")
-                    )
+                    val moscow = ContentValues()
+                    moscow.put(CITY_ID_COLUMN, 524901)
+                    moscow.put(CITY_NAME_COLUMN, "Moscow")
+
+                    val petersburg = ContentValues()
+                    petersburg.put(CITY_ID_COLUMN, 498817)
+                    petersburg.put(CITY_NAME_COLUMN, "Saint Petersburg")
+
+                    db.insert(CITY_TABLE, SQLiteDatabase.CONFLICT_REPLACE, moscow)
+                    db.insert(CITY_TABLE, SQLiteDatabase.CONFLICT_REPLACE, petersburg)
                 }
             })
             .build()
@@ -57,6 +68,8 @@ class RepositoryModule(private val appContext: Context) {
 
         bind<WeatherRepository>() with singleton {
             WeatherRepository(
+                instance(),
+                instance(),
                 instance(),
                 instance(),
                 instance()

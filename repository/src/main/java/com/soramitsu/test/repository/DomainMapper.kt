@@ -21,7 +21,7 @@ fun WeatherForecast.toDomainModel(): Weather =
         humidity = humidity,
         windSpeed = windSpeed,
         pressure = pressure,
-        icon = icon
+        icon = "$WEATHER_ICON_URL$icon.png"
     )
 
 fun WeatherForecast.ForecastDay.toDomainModel(): Weather.WeatherDay =

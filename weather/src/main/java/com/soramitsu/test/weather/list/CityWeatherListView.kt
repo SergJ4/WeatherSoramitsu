@@ -1,8 +1,8 @@
-package com.soramitsu.test.weather
+package com.soramitsu.test.weather.list
 
 import com.soramitsu.test.core.base.BaseView
 
 interface CityWeatherListView : BaseView {
 
-    fun showCities(cities: List<CityWeatherItem>)
+    fun showCity(city: CityWeatherItem)
 }

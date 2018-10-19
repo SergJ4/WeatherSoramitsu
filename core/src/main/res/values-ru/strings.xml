@@ -1,0 +1,4 @@
+<resources>
+    <string name="no_network_error">Пожалуйста, проверьте сетевое подключение</string>
+    <string name="refresh_data_error">Ошибка при получении погоды. Данные могли устареть</string>
+</resources>

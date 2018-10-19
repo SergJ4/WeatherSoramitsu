@@ -1,1 +1,4 @@
-<resources></resources>
+<resources>
+    <string name="no_network_error">Please check your network connection</string>
+    <string name="refresh_data_error">Error refreshing weather. Data could be outdated</string>
+</resources>

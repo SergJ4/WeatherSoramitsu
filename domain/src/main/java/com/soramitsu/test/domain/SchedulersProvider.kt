@@ -1,4 +1,4 @@
-package com.soramitsu.test.core.base
+package com.soramitsu.test.domain
 
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers

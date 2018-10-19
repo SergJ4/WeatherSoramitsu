@@ -1,35 +1,37 @@
 package com.soramitsu.test.repository
 
-import com.soramitsu.test.domain.exceptions.Error
+import com.soramitsu.test.domain.SchedulersProvider
 import com.soramitsu.test.domain.exceptions.NetworkConnectionError
 import com.soramitsu.test.domain.exceptions.NetworkErrorException
 import com.soramitsu.test.domain.exceptions.RefreshDataError
-import com.soramitsu.test.domain.interfaces.Executor
+import com.soramitsu.test.domain.interfaces.ApiErrors
+import com.soramitsu.test.domain.interfaces.Logger
 import com.soramitsu.test.domain.interfaces.WeatherRepository
 import com.soramitsu.test.domain.models.City
 import com.soramitsu.test.domain.models.Trigger
 import com.soramitsu.test.repository.datasource.api.ApiDataSource
 import com.soramitsu.test.repository.datasource.db.DbDataSource
-import com.soramitsu.test.repository.model.api.ApiCurrentWeatherResponse
 import com.soramitsu.test.repository.model.api.ApiForecastWeatherResponse
+import com.soramitsu.test.repository.model.api.ApiGroupedWeatherResponse
 import io.reactivex.Flowable
-import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
 
 class WeatherRepository(
     private val apiDataSource: ApiDataSource,
     private val dbDataSource: DbDataSource,
-    private val executor: Executor
+    compositeDisposable: CompositeDisposable,
+    private val apiErrors: ApiErrors,
+    private val logger: Logger
 ) : WeatherRepository {
 
     private val refreshTrigger: PublishSubject<Trigger> = PublishSubject.create()
-    private val errorBus: PublishSubject<Error> = PublishSubject.create()
 
     init {
-        executor
-            .executeAsync(
+        compositeDisposable
+            .add(
                 refreshTrigger
                     .startWith(Trigger)
                     .flatMapSingle { dbDataSource.getCitiesInDb() }
@@ -39,28 +41,30 @@ class WeatherRepository(
                             .fetchCurrentWeatherForAll(cities)
                             .onErrorReturn {
                                 handleException(it)
-                                listOf()
+                                ApiGroupedWeatherResponse(listOf())
                             }
                             .zipWith(
                                 fetchForecastForAll(cities).onErrorReturn {
                                     handleException(it)
                                     listOf()
                                 },
-                                BiFunction { currentWeatherList: List<ApiCurrentWeatherResponse>,
+                                BiFunction { currentWeatherList: ApiGroupedWeatherResponse,
                                              forecastList: List<ApiForecastWeatherResponse> ->
                                     currentWeatherList to forecastList
                                 }
                             )
                             .doOnSuccess { (currentWeather, forecast) ->
-                                if (currentWeather.isNotEmpty()) {
-                                    dbDataSource.insertOrUpdateCurrentWeather(currentWeather)
+                                if (currentWeather.weatherList.isNotEmpty()) {
+                                    dbDataSource.insertOrUpdateCurrentWeather(currentWeather.weatherList)
                                 }
                                 if (forecast.isNotEmpty()) {
                                     dbDataSource.insertOrUpdateForecast(forecast)
                                 }
                             }
                     }
-            ) { }
+                    .subscribeOn(SchedulersProvider.io())
+                    .subscribe()
+            )
     }
 
     //Openweather api has batch request for multiple cities current weather, but has no for forecast
@@ -71,19 +75,21 @@ class WeatherRepository(
                 cities.map {
                     apiDataSource.fetchForecastWeather(cityId = it.id)
                 }
-            ) { listOf(*(it as Array<ApiForecastWeatherResponse>)) }
+            ) { array ->
+                array.map { it as ApiForecastWeatherResponse }.toList()
+            }
 
     private fun handleException(exception: Throwable) {
+        logger.logErrorIfDebug(exception)
+
         val error = if (exception is NetworkErrorException) {
             NetworkConnectionError
         } else {
             RefreshDataError
         }
 
-        errorBus.onNext(error)
+        apiErrors(error)
     }
-
-    override fun listenErrors(): Observable<Error> = errorBus.hide()
 
     override fun observeCitiesCurrentWeather(): Flowable<City> =
         dbDataSource

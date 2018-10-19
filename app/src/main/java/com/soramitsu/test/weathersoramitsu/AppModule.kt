@@ -2,6 +2,7 @@ package com.soramitsu.test.weathersoramitsu
 
 import android.content.Context
 import com.soramitsu.test.core.implementation.LoggerImpl
+import com.soramitsu.test.domain.interfaces.ApiErrors
 import com.soramitsu.test.domain.interfaces.ImageLoader
 import com.soramitsu.test.domain.interfaces.Logger
 import com.soramitsu.test.repository.ImageLoaderImpl
@@ -31,4 +32,5 @@ fun appModule(appContext: Context) = Kodein.Module(name = "AppModule") {
     bind<Logger>() with singleton { LoggerImpl() }
 
     bind<CompositeDisposable>() with provider { CompositeDisposable() }
+    bind<ApiErrors>() with singleton { ApiErrors() }
 }

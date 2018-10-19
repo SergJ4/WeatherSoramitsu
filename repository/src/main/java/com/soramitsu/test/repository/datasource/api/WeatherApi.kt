@@ -2,6 +2,7 @@ package com.soramitsu.test.repository.datasource.api
 
 import com.soramitsu.test.repository.model.api.ApiCurrentWeatherResponse
 import com.soramitsu.test.repository.model.api.ApiForecastWeatherResponse
+import com.soramitsu.test.repository.model.api.ApiGroupedWeatherResponse
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -56,5 +57,5 @@ interface WeatherApi {
         @Query(LANG_QUERY_PARAM) languageCode: String,
         @Query(UNITS_QUERY_PARAM) measureUnits: String,
         @Query(APP_KEY_QUERY_PARAM) appKey: String
-    ): Single<List<ApiCurrentWeatherResponse>>
+    ): Single<ApiGroupedWeatherResponse>
 }
