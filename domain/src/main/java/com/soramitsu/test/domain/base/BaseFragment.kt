@@ -17,7 +17,7 @@ import org.kodein.di.android.support.closestKodein
 import org.kodein.di.direct
 import org.kodein.di.generic.instance
 
-abstract class BaseFragment<P : BasePresenter<*>> : MvpAppCompatFragment(), BaseView, KodeinAware {
+abstract class BaseFragment : MvpAppCompatFragment(), BaseView, KodeinAware {
 
     private val parentKodein by closestKodein()
 
@@ -25,8 +25,6 @@ abstract class BaseFragment<P : BasePresenter<*>> : MvpAppCompatFragment(), Base
         extend(parentKodein)
         import(module())
     }
-
-    lateinit var presenter: P
 
     @get:LayoutRes
     protected abstract val layoutRes: Int
