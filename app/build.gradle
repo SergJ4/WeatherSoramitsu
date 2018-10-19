@@ -44,4 +44,9 @@ dependencies {
     implementation dep.moxy.lib
     implementation dep.moxy.android
     kapt dep.moxy.compiler
+
+
+    testImplementation testDep.junit
+    testImplementation testDep.hamcrest
+    testImplementation testDep.kotlinMock
 }
