@@ -8,9 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.arellomobile.mvp.MvpAppCompatFragment
+import com.soramitsu.test.core.implementation.ExecutorImpl
 import com.soramitsu.test.core.implementation.MessageBusImpl
 import com.soramitsu.test.core.implementation.ProgressBusImpl
 import com.soramitsu.test.domain.R
+import com.soramitsu.test.domain.interfaces.Executor
 import com.soramitsu.test.domain.interfaces.MessageBus
 import com.soramitsu.test.domain.interfaces.ProgressBus
 import org.jetbrains.anko.findOptional
@@ -29,8 +31,16 @@ abstract class BaseFragment : MvpAppCompatFragment(), BaseView, KodeinAware {
     override val kodein = Kodein.lazy {
         extend(parentKodein)
         import(module())
-        bind<MessageBus>() with singleton { MessageBusImpl(instance()) }
-        bind<ProgressBus>() with singleton { ProgressBusImpl() }
+        bind<MessageBus>(overrides = true) with singleton { MessageBusImpl(instance()) }
+        bind<ProgressBus>(overrides = true) with singleton { ProgressBusImpl() }
+        bind<Executor>(overrides = true) with singleton {
+            ExecutorImpl(
+                instance(),
+                instance(),
+                instance(),
+                instance()
+            )
+        }
     }
 
     @get:LayoutRes
