@@ -1,12 +1,49 @@
 package com.soramitsu.test.weather
 
+import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
+import android.view.View
+import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.soramitsu.test.domain.base.BaseFragment
+import com.soramitsu.test.domain.base.SwipeRefresh
+import eu.davidea.flexibleadapter.FlexibleAdapter
+import kotlinx.android.synthetic.main.city_weather_list_layout.*
 import org.kodein.di.Kodein
+import org.kodein.di.generic.instance
 
-class CityWeatherListFragment : BaseFragment() {
+class CityWeatherListFragment : BaseFragment(), CityWeatherListView {
 
-    override val layoutRes: Int
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    @InjectPresenter
+    lateinit var presenter: CityWeatherListPresenter
 
-    override fun module(): Kodein.Module = cityWeatherListModule()
+    @ProvidePresenter
+    fun presenterProvider() = providePresenter<CityWeatherListPresenter>()
+
+    override val layoutRes: Int = R.layout.city_weather_list_layout
+
+    private val adapter: FlexibleAdapter<CityWeatherItem> =
+        FlexibleAdapter(null, null, true)
+
+    override fun module(): Kodein.Module = cityWeatherListModule(kodein)
+
+    private val swipeRefreshListener: SwipeRefresh by instance()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        swipeRefresh.setOnRefreshListener(swipeRefreshListener)
+    }
+
+    override fun showCities(cities: List<CityWeatherItem>) {
+        if (cityList.adapter == null) {
+            cityList.adapter = adapter
+        }
+
+        if (cityList.layoutManager == null) {
+            cityList.layoutManager = LinearLayoutManager(cityList.context)
+        }
+
+        adapter.updateDataSet(cities)
+    }
 }

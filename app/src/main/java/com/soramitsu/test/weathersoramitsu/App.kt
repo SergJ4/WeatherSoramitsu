@@ -7,7 +7,7 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import timber.log.Timber
 
-@RegisterMoxyReflectorPackages("com.soramitsu.test.domain")
+@RegisterMoxyReflectorPackages("com.soramitsu.test.weather")
 class App : Application(), KodeinAware {
 
     override val kodein = Kodein.lazy {

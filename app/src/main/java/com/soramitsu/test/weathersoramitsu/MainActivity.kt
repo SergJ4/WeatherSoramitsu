@@ -4,7 +4,9 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.soramitsu.test.domain.base.BaseActivity
 import org.kodein.di.Kodein
+import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
+import org.kodein.di.generic.singleton
 import ru.terrakok.cicerone.NavigatorHolder
 
 class MainActivity : BaseActivity(), MainView {
@@ -18,7 +20,9 @@ class MainActivity : BaseActivity(), MainView {
 
     private val navigatorHolder: NavigatorHolder by instance()
 
-    override fun module(): Kodein.Module = Kodein.Module(MainActivity::class.java.canonicalName) {}
+    override fun module(): Kodein.Module = Kodein.Module(MainActivity::class.java.canonicalName) {
+        bind<MainPresenter>() with singleton { MainPresenter(kodein) }
+    }
 
     @ProvidePresenter
     fun presenterProvider() = providePresenter<MainPresenter>()

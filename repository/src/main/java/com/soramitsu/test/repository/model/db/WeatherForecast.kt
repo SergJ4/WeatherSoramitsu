@@ -2,6 +2,7 @@ package com.soramitsu.test.repository.model.db
 
 import android.arch.persistence.room.*
 import android.arch.persistence.room.ForeignKey.CASCADE
+import android.support.annotation.NonNull
 
 const val FORECAST_TABLE = "forecasts"
 const val FORECAST_CODE_COLUMN = "code"
@@ -18,18 +19,21 @@ const val FORECAST_CITY_ID_COLUMN = "city_id"
     tableName = FORECAST_TABLE,
     foreignKeys = [ForeignKey(
         entity = City::class,
-        parentColumns = arrayOf("id"),
-        childColumns = arrayOf("city_id"),
+        parentColumns = arrayOf(CITY_ID_COLUMN),
+        childColumns = arrayOf(FORECAST_CITY_ID_COLUMN),
         onDelete = CASCADE
-    )]
+    )],
+    primaryKeys = [FORECAST_DAY_COLUMN, FORECAST_CITY_ID_COLUMN],
+    indices = [Index(value = arrayOf(FORECAST_CITY_ID_COLUMN))]
 )
+
+@TypeConverters(ForecastDayConverter::class)
 data class WeatherForecast(
     @ColumnInfo(name = FORECAST_CODE_COLUMN)
     val code: Int,
 
-    @TypeConverters(ForecastDayConverter::class)
     @ColumnInfo(name = FORECAST_DAY_COLUMN)
-    @PrimaryKey
+    @NonNull
     val forDay: ForecastDay,
 
     @ColumnInfo(name = FORECAST_DESCRIPTION_COLUMN)
@@ -51,18 +55,16 @@ data class WeatherForecast(
     val icon: String,
 
     @ColumnInfo(name = FORECAST_CITY_ID_COLUMN)
-    @PrimaryKey
     val forCityId: Long
 ) {
 
-    enum class ForecastDay(val code: Int) {
-        CURRENT_WEATHER(0), TOMORROW(1), AFTER_TOMORROW(2), THIRD_DAY(3)
+    enum class ForecastDay {
+        CURRENT_WEATHER, TOMORROW, AFTER_TOMORROW, THIRD_DAY
     }
 }
 
 class ForecastDayConverter {
     companion object {
-
         @JvmStatic
         @TypeConverter
         fun toDay(code: Int): WeatherForecast.ForecastDay = when (code) {
@@ -70,11 +72,11 @@ class ForecastDayConverter {
             1 -> WeatherForecast.ForecastDay.TOMORROW
             2 -> WeatherForecast.ForecastDay.AFTER_TOMORROW
             3 -> WeatherForecast.ForecastDay.THIRD_DAY
-            else -> throw IllegalArgumentException("Unknow day code: $code")
+            else -> throw IllegalArgumentException("Unknown day code: $code")
         }
 
         @JvmStatic
         @TypeConverter
-        fun fromDay(day: WeatherForecast.ForecastDay): Int = day.code
+        fun toInt(day: WeatherForecast.ForecastDay): Int = day.ordinal
     }
 }

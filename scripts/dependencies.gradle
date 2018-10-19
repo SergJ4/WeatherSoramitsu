@@ -13,10 +13,10 @@ ext {
             timber            : "4.7.1",
             gson              : "2.8.5",
             okhttp3           : "3.11.0",
-            recyclerAdapter   : "5.1.0",
+            recyclerAdapter   : "5.0.6",
             glide             : "4.8.0",
             kodein            : "5.3.0",
-            moxy              : "1.5.5",
+            moxy              : "1.5.3",
             room              : "1.1.1"
     ]
 

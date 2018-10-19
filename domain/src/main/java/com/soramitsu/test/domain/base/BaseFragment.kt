@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.arellomobile.mvp.MvpAppCompatFragment
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.soramitsu.test.domain.R
 import org.jetbrains.anko.findOptional
 import org.kodein.di.Kodein
@@ -29,7 +28,6 @@ abstract class BaseFragment : MvpAppCompatFragment(), BaseView, KodeinAware {
     @get:LayoutRes
     protected abstract val layoutRes: Int
 
-    @ProvidePresenter
     inline fun <reified P : BasePresenter<*>> providePresenter(): P = kodein.direct.instance()
 
     abstract fun module(): Kodein.Module

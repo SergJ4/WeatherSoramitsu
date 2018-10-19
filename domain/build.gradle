@@ -25,12 +25,6 @@ android {
 
 }
 
-kapt {
-    arguments {
-        arg("moxyReflectorPackage", "com.soramitsu.test.domain")
-    }
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 

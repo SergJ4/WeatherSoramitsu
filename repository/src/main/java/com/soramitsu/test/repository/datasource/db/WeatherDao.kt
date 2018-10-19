@@ -1,9 +1,6 @@
 package com.soramitsu.test.repository.datasource.db
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Query
+import android.arch.persistence.room.*
 import com.soramitsu.test.repository.model.db.*
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -12,9 +9,11 @@ import io.reactivex.Single
 interface WeatherDao {
 
     @Query("SELECT * FROM $CITY_TABLE")
+    @Transaction
     fun getCititesAndWeather(): Flowable<CityWithWeather>
 
     @Query("SELECT * FROM $CITY_TABLE WHERE $CITY_NAME_COLUMN LIKE :cityName")
+    @Transaction
     fun getWeatherForCity(cityName: String): Flowable<CityWithWeather>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
