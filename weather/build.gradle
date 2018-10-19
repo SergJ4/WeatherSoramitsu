@@ -38,6 +38,7 @@ dependencies {
 
     implementation dep.support.design
     implementation dep.support.appCompat
+    implementation dep.support.constraintLayout
 
     implementation dep.kotlin.lib
     implementation dep.kotlin.anko_commons

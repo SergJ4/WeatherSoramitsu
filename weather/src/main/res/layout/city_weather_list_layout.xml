@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         app:layout_anchor="@id/cityList"
         app:layout_anchorGravity="bottom|end"
-        android:layout_margin="16dp" />
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_city" />
 
 </android.support.design.widget.CoordinatorLayout>
