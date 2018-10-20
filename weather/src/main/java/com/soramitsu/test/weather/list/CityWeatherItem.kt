@@ -1,7 +1,9 @@
 package com.soramitsu.test.weather.list
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.soramitsu.test.domain.extensions.color
 import com.soramitsu.test.domain.interfaces.ImageLoader
 import com.soramitsu.test.domain.models.City
 import com.soramitsu.test.domain.models.Weather
@@ -12,7 +14,8 @@ import eu.davidea.flexibleadapter.items.IFlexible
 
 class CityWeatherItem(
     internal val imageLoader: ImageLoader,
-    private val city: City
+    private val city: City,
+    private val context: Context
 ) : AbstractFlexibleItem<CityWeatherViewHolder>() {
 
     private val currentWeather = city
@@ -21,8 +24,29 @@ class CityWeatherItem(
 
     internal val cityName = city.title
     internal val weatherDescription = currentWeather?.description ?: ""
-    internal val temperature = currentWeather?.temperature ?: 0f
+    internal val temperature: String
+        get() {
+            val temp = currentWeather?.temperature?.toInt() ?: 0
+            val result = "$temp\u2103"
+            return if (temp > 0) {
+                "+$result"
+            } else {
+                result
+            }
+        }
     internal val icon = currentWeather?.icon ?: ""
+
+    internal val temperatureColor: Int
+        get() {
+            val temp = currentWeather?.temperature ?: 0f
+            return when {
+                temp < -10 -> context.color(R.color.temperature_very_cold)
+                temp < 10 -> context.color(R.color.temperature_cold)
+                temp < 25 -> context.color(R.color.temperature_warm)
+                temp >= 25 -> context.color(R.color.temperature_hot)
+                else -> context.color(R.color.weather_city_card_temperature_default_color)
+            }
+        }
 
     override fun bindViewHolder(
         adapter: FlexibleAdapter<IFlexible<RecyclerView.ViewHolder>>,

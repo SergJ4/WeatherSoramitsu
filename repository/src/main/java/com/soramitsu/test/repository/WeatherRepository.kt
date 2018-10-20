@@ -91,10 +91,10 @@ class WeatherRepository(
         apiErrors(error)
     }
 
-    override fun observeCitiesCurrentWeather(): Flowable<City> =
+    override fun observeCitiesCurrentWeather(): Flowable<List<City>> =
         dbDataSource
             .fetchCurrentWeather()
-            .map { it.toDomainModel() }
+            .map { list -> list.map { it.toDomainModel() } }
 
     override fun refresh() = refreshTrigger.onNext(Trigger)
 }

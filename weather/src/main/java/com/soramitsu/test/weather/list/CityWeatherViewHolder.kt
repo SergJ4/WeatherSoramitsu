@@ -15,7 +15,8 @@ class CityWeatherViewHolder(view: View, adapter: FlexibleAdapter<*>) :
     fun bind(cityWeatherItem: CityWeatherItem) {
         cityTitle.text = cityWeatherItem.cityName
         weatherDescription.text = cityWeatherItem.weatherDescription
-        temperatureText.text = cityWeatherItem.temperature.toInt().toString()
+        temperatureText.text = cityWeatherItem.temperature
+        temperatureText.setTextColor(cityWeatherItem.temperatureColor)
         cityWeatherItem
             .imageLoader
             .load(weatherIcon, ImageLoaderOptions(resourceUri = cityWeatherItem.icon))

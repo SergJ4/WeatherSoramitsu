@@ -6,5 +6,12 @@ import io.reactivex.Flowable
 
 class FetchCitiesWithWeather(private val repository: WeatherRepository) {
 
-    operator fun invoke(): Flowable<City> = repository.observeCitiesCurrentWeather()
+    operator fun invoke(): Flowable<List<City>> = repository
+        .observeCitiesCurrentWeather()
+        .map { citites ->
+            citites.filter {
+                it.weatherPrediction.isNotEmpty() &&
+                        !it.weatherPrediction[0].description.isNullOrBlank()
+            }
+        }
 }

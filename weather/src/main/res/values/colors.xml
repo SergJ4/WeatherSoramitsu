@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="weather_city_card_title_color">@color/black</color>
+    <color name="weather_city_card_temperature_default_color">@color/black</color>
+    <color name="temperature_cold">@color/light_blue</color>
+    <color name="temperature_very_cold">@color/dark_blue</color>
+    <color name="temperature_warm">@color/yellow</color>
+    <color name="temperature_hot">@color/red</color>
 </resources>

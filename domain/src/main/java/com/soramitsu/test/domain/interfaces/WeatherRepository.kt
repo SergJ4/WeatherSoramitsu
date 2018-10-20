@@ -5,7 +5,7 @@ import io.reactivex.Flowable
 
 interface WeatherRepository {
 
-    fun observeCitiesCurrentWeather(): Flowable<City>
+    fun observeCitiesCurrentWeather(): Flowable<List<City>>
 
     fun refresh()
 }

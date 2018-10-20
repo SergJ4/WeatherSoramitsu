@@ -47,11 +47,5 @@ class CityWeatherListFragment : BaseFragment(),
         }
     }
 
-    override fun showCity(city: CityWeatherItem) {
-        if (adapter.contains(city)) {
-            adapter.updateItem(city)
-        } else {
-            adapter.addItem(city)
-        }
-    }
+    override fun showCities(cities: List<CityWeatherItem>) = adapter.updateDataSet(cities)
 }

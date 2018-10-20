@@ -11,14 +11,16 @@ import io.reactivex.Single
 
 class DbDataSource(private val weatherDao: WeatherDao) {
 
-    fun fetchCurrentWeather(): Flowable<CityWithWeather> =
+    fun fetchCurrentWeather(): Flowable<List<CityWithWeather>> =
         weatherDao
             .getCititesAndWeather()
-            .map { cityWithWeather ->
-                CityWithWeather().apply {
-                    city = cityWithWeather.city
-                    weather =
-                            cityWithWeather.weather.filter { it.forDay == WeatherForecast.ForecastDay.CURRENT_WEATHER }
+            .map { cityWithWeatherList ->
+                cityWithWeatherList.map { cityWithWeather ->
+                    CityWithWeather().apply {
+                        city = cityWithWeather.city
+                        weather =
+                                cityWithWeather.weather.filter { it.forDay == WeatherForecast.ForecastDay.CURRENT_WEATHER }
+                    }
                 }
             }
 

@@ -15,11 +15,22 @@ class CityWeatherListPresenter(kodein: Kodein) : BasePresenter<CityWeatherListVi
 
     init {
         executor
-            .executeAsync(fetchCitiesWithWeather().map { createItem(it) }) {
-                viewState.showCity(it)
+            .executeAsync(
+                fetchCitiesWithWeather()
+                    .map {
+                        createItems(it)
+                    }) {
+                viewState.showCities(it)
             }
     }
 
-    private fun createItem(city: City): CityWeatherItem =
-        CityWeatherItem(imageLoader = kodein.direct.instance(), city = city)
+    private fun createItems(cities: List<City>): List<CityWeatherItem> =
+        cities
+            .map {
+                CityWeatherItem(
+                    imageLoader = kodein.direct.instance(),
+                    city = it,
+                    context = kodein.direct.instance()
+                )
+            }
 }

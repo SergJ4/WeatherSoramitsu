@@ -10,7 +10,7 @@ interface WeatherDao {
 
     @Query("SELECT * FROM $CITY_TABLE")
     @Transaction
-    fun getCititesAndWeather(): Flowable<CityWithWeather>
+    fun getCititesAndWeather(): Flowable<List<CityWithWeather>>
 
     @Query("SELECT * FROM $CITY_TABLE WHERE $CITY_NAME_COLUMN LIKE :cityName")
     @Transaction
