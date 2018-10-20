@@ -5,6 +5,7 @@ import com.soramitsu.test.core.base.BasePresenter
 import com.soramitsu.test.core.base.SwipeRefresh
 import com.soramitsu.test.core.usecase.RefreshWeatherRepo
 import com.soramitsu.test.domain.models.City
+import com.soramitsu.test.weather.list.adapter.CityWeatherItem
 import com.soramitsu.test.weather.usecase.FetchCitiesWithWeather
 import org.kodein.di.Kodein
 import org.kodein.di.direct

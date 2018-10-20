@@ -1,4 +1,4 @@
-package com.soramitsu.test.weather.list
+package com.soramitsu.test.weather.list.adapter
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView

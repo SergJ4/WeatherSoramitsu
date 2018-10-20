@@ -1,4 +1,4 @@
-package com.soramitsu.test.weather.list
+package com.soramitsu.test.weather.list.adapter
 
 import android.view.View
 import com.soramitsu.test.domain.interfaces.ImageLoaderOptions

@@ -8,6 +8,7 @@ import com.arellomobile.mvp.presenter.PresenterType
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.soramitsu.test.core.base.BaseFragment
 import com.soramitsu.test.weather.R
+import com.soramitsu.test.weather.list.adapter.CityWeatherItem
 import eu.davidea.flexibleadapter.FlexibleAdapter
 import kotlinx.android.synthetic.main.city_weather_list_layout.*
 import org.kodein.di.Kodein
