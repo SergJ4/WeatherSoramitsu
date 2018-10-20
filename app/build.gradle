@@ -3,8 +3,31 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
+def releaseKeystore = rootProject.file("releaseKeystore.properties")
+def debugKeystore = rootProject.file("debugKeystore.properties")
+
+def releaseProperties = new Properties()
+def debugProperties = new Properties()
+
+releaseProperties.load(new FileInputStream((releaseKeystore)))
+debugProperties.load(new FileInputStream((debugKeystore)))
+
 android {
     compileSdkVersion 28
+    signingConfigs {
+        debug {
+            storeFile file(debugProperties['storeFile'])
+            storePassword debugProperties['storePassword']
+            keyAlias debugProperties['keyAlias']
+            keyPassword debugProperties['keyPassword']
+        }
+        release {
+            storeFile file(releaseProperties['storeFile'])
+            storePassword releaseProperties['storePassword']
+            keyAlias releaseProperties['keyAlias']
+            keyPassword releaseProperties['keyPassword']
+        }
+    }
     defaultConfig {
         applicationId "com.soramitsu.test.weathersoramitsu"
         minSdkVersion 19

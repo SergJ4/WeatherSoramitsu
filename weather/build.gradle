@@ -54,7 +54,7 @@ dependencies {
     kapt dep.moxy.compiler
 
     implementation dep.recyclerAdapter
-
+    implementation dep.playServices.places
 }
 
 androidExtensions {

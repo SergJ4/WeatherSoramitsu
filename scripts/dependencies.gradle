@@ -17,7 +17,8 @@ ext {
             glide             : "4.8.0",
             kodein            : "5.3.0",
             moxy              : "1.5.3",
-            room              : "1.1.1"
+            room              : "1.1.1",
+            places            : "16.0.0"
     ]
 
     //Version
@@ -82,6 +83,10 @@ ext {
                     lib        : "android.arch.persistence.room:runtime:$ver.room",
                     rx         : "android.arch.persistence.room:rxjava2:$ver.room",
                     compiler   : "android.arch.persistence.room:compiler:$ver.room"
+            ],
+
+            playServices       : [
+                    places     : "com.google.android.gms:play-services-places:$ver.places"
             ]
     ]
 }
