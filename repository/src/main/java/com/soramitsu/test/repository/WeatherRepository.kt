@@ -64,6 +64,13 @@ class WeatherRepository(
             .fetchCurrentWeather()
             .map { list -> list.map { it.toDomainModel() } }
 
+    override fun observeExactCityWeather(cityId: Long): Flowable<City> =
+        dbDataSource
+            .fetchForecastWeatherForCityId(cityId)
+            .map {
+                it.toDomainModel()
+            }
+
     override fun refresh(): Completable = dbDataSource
         .getCitiesInDb()
         .filter { it.isNotEmpty() }

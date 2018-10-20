@@ -14,7 +14,11 @@ interface WeatherDao {
 
     @Query("SELECT * FROM $CITY_TABLE WHERE $CITY_NAME_COLUMN LIKE :cityName")
     @Transaction
-    fun getWeatherForCity(cityName: String): Flowable<CityWithWeather>
+    fun getWeatherForCityName(cityName: String): Flowable<CityWithWeather>
+
+    @Query("SELECT * FROM $CITY_TABLE WHERE $CITY_ID_COLUMN LIKE :cityId")
+    @Transaction
+    fun getWeatherForCityId(cityId: Long): Flowable<CityWithWeather>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrUpdateWeather(weather: WeatherForecast)

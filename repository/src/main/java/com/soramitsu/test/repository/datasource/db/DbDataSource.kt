@@ -24,9 +24,8 @@ class DbDataSource(private val weatherDao: WeatherDao) {
                 }
             }
 
-    fun fetchForecastWeatherForCity(cityName: String): Flowable<CityWithWeather> =
-        weatherDao
-            .getWeatherForCity(cityName)
+    fun fetchForecastWeatherForCityId(cityId: Long): Flowable<CityWithWeather> =
+        weatherDao.getWeatherForCityId(cityId)
 
     fun getCitiesInDb(): Single<List<City>> =
         weatherDao
