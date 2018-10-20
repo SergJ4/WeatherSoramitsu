@@ -9,6 +9,7 @@ import com.soramitsu.test.domain.interfaces.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
+import java.util.concurrent.TimeUnit
 
 abstract class BasePresenter<V : BaseView>(override val kodein: Kodein) : MvpPresenter<V>(),
     KodeinAware {
@@ -37,11 +38,15 @@ abstract class BasePresenter<V : BaseView>(override val kodein: Kodein) : MvpPre
             }
 
         executor
-            .executeAsync(apiErrors()) {
+            .executeAsync(
+                apiErrors()
+                    .debounce(600, TimeUnit.MILLISECONDS)
+            ) {
                 when (it) {
                     is NetworkConnectionError -> viewState.showMessage(context.getString(R.string.no_network_error))
                     is RefreshDataError -> viewState.showMessage(context.getString(R.string.refresh_data_error))
                 }
+                viewState.hideProgress()
             }
     }
 

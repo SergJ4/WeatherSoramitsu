@@ -1,5 +1,6 @@
 package com.soramitsu.test.domain.interfaces
 
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -37,6 +38,15 @@ interface Executor {
         },
         onComplete: () -> Unit = {},
         onNext: (T) -> Unit = {}
+    )
+
+    fun executeAsync(
+        completable: Completable,
+        onError: (Throwable) -> Unit = { throwable ->
+            progressBarBus.hide()
+            logger.logErrorIfDebug(throwable)
+        },
+        onComplete: () -> Unit = {}
     )
 
     fun <T> subscribeOnUi(

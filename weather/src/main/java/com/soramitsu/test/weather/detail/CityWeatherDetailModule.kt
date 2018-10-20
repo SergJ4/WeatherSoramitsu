@@ -1,22 +1,20 @@
-package com.soramitsu.test.weather.list
+package com.soramitsu.test.weather.detail
 
 import com.soramitsu.test.core.base.SwipeRefresh
 import com.soramitsu.test.core.usecase.RefreshWeatherRepo
-import com.soramitsu.test.weather.usecase.FetchCitiesWithWeather
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
 
-fun cityWeatherListModule(kodein: Kodein) =
-    Kodein.Module(CityWeatherListFragment::class.java.canonicalName) {
+fun cityWeatherDetailModule(kodein: Kodein) =
+    Kodein.Module(CityWeatherDetailFragment::class.java.canonicalName) {
         bind<SwipeRefresh>() with singleton { SwipeRefresh() }
-        bind<CityWeatherListPresenter>() with singleton {
-            CityWeatherListPresenter(
+        bind<CityWeatherDetailPresenter>() with singleton {
+            CityWeatherDetailPresenter(
                 kodein
             )
         }
-        bind<FetchCitiesWithWeather>() with singleton { FetchCitiesWithWeather(instance()) }
         bind<RefreshWeatherRepo>() with singleton {
             RefreshWeatherRepo(
                 instance(),

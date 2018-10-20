@@ -12,6 +12,7 @@ import com.soramitsu.test.core.implementation.ExecutorImpl
 import com.soramitsu.test.core.implementation.MessageBusImpl
 import com.soramitsu.test.core.implementation.ProgressBusImpl
 import com.soramitsu.test.domain.R
+import com.soramitsu.test.domain.extensions.applyDefaultStyle
 import com.soramitsu.test.domain.interfaces.Executor
 import com.soramitsu.test.domain.interfaces.MessageBus
 import com.soramitsu.test.domain.interfaces.ProgressBus
@@ -55,6 +56,11 @@ abstract class BaseFragment : MvpAppCompatFragment(), BaseView, KodeinAware {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(layoutRes, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.findOptional<SwipeRefreshLayout>(R.id.swipeRefresh)?.applyDefaultStyle()
+    }
 
     override fun showProgress() {
         view?.findOptional<SwipeRefreshLayout>(R.id.swipeRefresh)

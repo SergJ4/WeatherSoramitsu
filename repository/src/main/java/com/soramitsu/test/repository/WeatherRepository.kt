@@ -8,16 +8,15 @@ import com.soramitsu.test.domain.interfaces.ApiErrors
 import com.soramitsu.test.domain.interfaces.Logger
 import com.soramitsu.test.domain.interfaces.WeatherRepository
 import com.soramitsu.test.domain.models.City
-import com.soramitsu.test.domain.models.Trigger
 import com.soramitsu.test.repository.datasource.api.ApiDataSource
 import com.soramitsu.test.repository.datasource.db.DbDataSource
 import com.soramitsu.test.repository.model.api.ApiForecastWeatherResponse
 import com.soramitsu.test.repository.model.api.ApiGroupedWeatherResponse
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
-import io.reactivex.subjects.PublishSubject
 
 class WeatherRepository(
     private val apiDataSource: ApiDataSource,
@@ -27,41 +26,10 @@ class WeatherRepository(
     private val logger: Logger
 ) : WeatherRepository {
 
-    private val refreshTrigger: PublishSubject<Trigger> = PublishSubject.create()
-
     init {
         compositeDisposable
             .add(
-                refreshTrigger
-                    .startWith(Trigger)
-                    .flatMapSingle { dbDataSource.getCitiesInDb() }
-                    .filter { it.isNotEmpty() }
-                    .flatMapSingle { cities ->
-                        apiDataSource
-                            .fetchCurrentWeatherForAll(cities)
-                            .onErrorReturn {
-                                handleException(it)
-                                ApiGroupedWeatherResponse(listOf())
-                            }
-                            .zipWith(
-                                fetchForecastForAll(cities).onErrorReturn {
-                                    handleException(it)
-                                    listOf()
-                                },
-                                BiFunction { currentWeatherList: ApiGroupedWeatherResponse,
-                                             forecastList: List<ApiForecastWeatherResponse> ->
-                                    currentWeatherList to forecastList
-                                }
-                            )
-                            .doOnSuccess { (currentWeather, forecast) ->
-                                if (currentWeather.weatherList.isNotEmpty()) {
-                                    dbDataSource.insertOrUpdateCurrentWeather(currentWeather.weatherList)
-                                }
-                                if (forecast.isNotEmpty()) {
-                                    dbDataSource.insertOrUpdateForecast(forecast)
-                                }
-                            }
-                    }
+                refresh()
                     .subscribeOn(SchedulersProvider.io())
                     .subscribe()
             )
@@ -96,5 +64,34 @@ class WeatherRepository(
             .fetchCurrentWeather()
             .map { list -> list.map { it.toDomainModel() } }
 
-    override fun refresh() = refreshTrigger.onNext(Trigger)
+    override fun refresh(): Completable = dbDataSource
+        .getCitiesInDb()
+        .filter { it.isNotEmpty() }
+        .flatMapSingle { cities ->
+            apiDataSource
+                .fetchCurrentWeatherForAll(cities)
+                .onErrorReturn {
+                    handleException(it)
+                    ApiGroupedWeatherResponse(listOf())
+                }
+                .zipWith(
+                    fetchForecastForAll(cities).onErrorReturn {
+                        handleException(it)
+                        listOf()
+                    },
+                    BiFunction { currentWeatherList: ApiGroupedWeatherResponse,
+                                 forecastList: List<ApiForecastWeatherResponse> ->
+                        currentWeatherList to forecastList
+                    }
+                )
+                .doOnSuccess { (currentWeather, forecast) ->
+                    if (currentWeather.weatherList.isNotEmpty()) {
+                        dbDataSource.insertOrUpdateCurrentWeather(currentWeather.weatherList)
+                    }
+                    if (forecast.isNotEmpty()) {
+                        dbDataSource.insertOrUpdateForecast(forecast)
+                    }
+                }
+        }
+        .ignoreElement()
 }

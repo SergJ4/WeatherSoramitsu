@@ -5,6 +5,7 @@ import com.soramitsu.test.domain.interfaces.Executor
 import com.soramitsu.test.domain.interfaces.Logger
 import com.soramitsu.test.domain.interfaces.MessageBus
 import com.soramitsu.test.domain.interfaces.ProgressBus
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -54,6 +55,18 @@ class ExecutorImpl(
             observable.subscribeOn(SchedulersProvider.io())
                 .observeOn(SchedulersProvider.ui())
                 .subscribe(onSuccess, onError)
+        )
+    }
+
+    override fun executeAsync(
+        completable: Completable,
+        onError: (Throwable) -> Unit,
+        onComplete: () -> Unit
+    ) {
+        compositeDisposable.add(
+            completable.subscribeOn(SchedulersProvider.io())
+                .observeOn(SchedulersProvider.ui())
+                .subscribe(onComplete, onError)
         )
     }
 
