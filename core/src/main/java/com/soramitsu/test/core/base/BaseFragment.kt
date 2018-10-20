@@ -3,15 +3,17 @@ package com.soramitsu.test.core.base
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.design.widget.Snackbar
+import android.support.v4.view.ViewCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import com.arellomobile.mvp.MvpAppCompatFragment
+import com.soramitsu.test.core.R
 import com.soramitsu.test.core.implementation.ExecutorImpl
 import com.soramitsu.test.core.implementation.MessageBusImpl
 import com.soramitsu.test.core.implementation.ProgressBusImpl
-import com.soramitsu.test.domain.R
 import com.soramitsu.test.domain.extensions.applyDefaultStyle
 import com.soramitsu.test.domain.interfaces.Executor
 import com.soramitsu.test.domain.interfaces.MessageBus
@@ -50,6 +52,25 @@ abstract class BaseFragment : MvpAppCompatFragment(), BaseView, KodeinAware {
     inline fun <reified P : BasePresenter<*>> providePresenter(): P = kodein.direct.instance()
 
     abstract fun module(): Kodein.Module
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        allowEnterTransitionOverlap = true
+        allowReturnTransitionOverlap = true
+    }
+
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        if (view != null) {
+            if (nextAnim == R.anim.slide_in_right || nextAnim == R.anim.slide_out_right) {
+                ViewCompat.setTranslationZ(view!!, 1f)
+            } else {
+                ViewCompat.setTranslationZ(view!!, 0f)
+            }
+        }
+
+        return super.onCreateAnimation(transit, enter, nextAnim)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
