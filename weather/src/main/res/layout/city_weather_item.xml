@@ -11,6 +11,7 @@
     android:layout_marginBottom="8dp"
     android:clickable="true"
     android:focusable="true"
+    app:cardBackgroundColor="@color/primary_with_alpha"
     app:cardElevation="4dp">
 
     <android.support.constraint.ConstraintLayout
@@ -56,6 +57,7 @@
             app:autoSizeMinTextSize="8sp"
             app:autoSizeStepGranularity="2sp"
             app:autoSizeTextType="uniform"
+            android:textColor="@color/weather_city_card_title_color"
             app:layout_constraintBottom_toBottomOf="@id/weatherIcon"
             app:layout_constraintEnd_toStartOf="@+id/temperatureText"
             app:layout_constraintStart_toEndOf="@id/weatherIcon"

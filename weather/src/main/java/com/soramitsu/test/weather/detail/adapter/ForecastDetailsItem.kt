@@ -38,7 +38,7 @@ class ForecastDetailsItem(
         }
     internal val pressure: String
         get() {
-            return "${weather.pressure} ${context.getString(R.string.pressure_units)}"
+            return "${weather.pressure.toInt()} ${context.getString(R.string.pressure_units)}"
         }
     internal val humidity: String
         get() {
