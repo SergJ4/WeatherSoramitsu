@@ -7,6 +7,7 @@
     <color name="accent">#4fc3f7</color>
 
     <color name="black">#000</color>
+    <color name="white">#fff</color>
     <color name="light_blue">#60c3e7</color>
     <color name="dark_blue">#21a0ca</color>
     <color name="yellow">#ece51d</color>

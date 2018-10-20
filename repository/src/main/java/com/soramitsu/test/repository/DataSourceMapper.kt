@@ -16,7 +16,7 @@ fun ApiCurrentWeatherResponse.toDatabaseModel(): WeatherForecast =
         description = weatherDescription[0].description,
         temperature = mainInfo.temperature,
         humidity = mainInfo.humidity,
-        pressure = mainInfo.pressure,
+        pressure = mainInfo.pressure.toMmHgSt(),
         windSpeed = wind.speed,
         icon = weatherDescription[0].icon,
         forCityId = cityId
@@ -39,7 +39,7 @@ fun ApiForecastWeather.toDatabaseModel(city: ApiCity): WeatherForecast =
         description = weatherDescription[0].description,
         temperature = mainInfo.temperature,
         humidity = mainInfo.humidity,
-        pressure = mainInfo.pressure,
+        pressure = mainInfo.pressure.toMmHgSt(),
         windSpeed = wind.speed,
         icon = weatherDescription[0].icon,
         forCityId = city.id
@@ -63,3 +63,6 @@ private val Long.isMidday: Boolean
 
         return calendar.get(Calendar.HOUR_OF_DAY) == 12
     }
+
+//convert from hPa to mmHg St
+private fun Float.toMmHgSt(): Float = this * 0.75f
