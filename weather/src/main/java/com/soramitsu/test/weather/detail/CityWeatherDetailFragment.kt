@@ -7,7 +7,7 @@ import com.soramitsu.test.core.base.BaseFragment
 import com.soramitsu.test.weather.R
 import org.kodein.di.Kodein
 
-class CityWeatherDetailFragment : BaseFragment() {
+class CityWeatherDetailFragment : BaseFragment(), CityWeatherDetailView {
 
     @InjectPresenter
     lateinit var presenter: CityWeatherDetailPresenter

@@ -2,6 +2,7 @@ package com.soramitsu.test.weather.list
 
 import com.arellomobile.mvp.InjectViewState
 import com.soramitsu.test.core.base.BasePresenter
+import com.soramitsu.test.core.base.SwipeRefresh
 import com.soramitsu.test.core.usecase.RefreshWeatherRepo
 import com.soramitsu.test.domain.models.City
 import com.soramitsu.test.weather.usecase.FetchCitiesWithWeather
@@ -14,6 +15,7 @@ class CityWeatherListPresenter(kodein: Kodein) : BasePresenter<CityWeatherListVi
 
     private val fetchCitiesWithWeather: FetchCitiesWithWeather by instance()
     private val refreshWeatherRepo: RefreshWeatherRepo by instance()
+    internal val swipeRefreshListener: SwipeRefresh by instance()
 
     init {
         viewState.showProgress()

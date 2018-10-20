@@ -2,16 +2,13 @@ package com.soramitsu.test.core.base
 
 import android.os.Bundle
 import android.support.annotation.LayoutRes
-import android.support.v4.widget.SwipeRefreshLayout
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.soramitsu.test.core.implementation.ExecutorImpl
 import com.soramitsu.test.core.implementation.MessageBusImpl
 import com.soramitsu.test.core.implementation.ProgressBusImpl
-import com.soramitsu.test.domain.R
 import com.soramitsu.test.domain.interfaces.Executor
 import com.soramitsu.test.domain.interfaces.MessageBus
 import com.soramitsu.test.domain.interfaces.ProgressBus
-import org.jetbrains.anko.findOptional
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
@@ -52,13 +49,11 @@ abstract class BaseActivity : MvpAppCompatActivity(), BaseView, KodeinAware {
     }
 
     override fun showProgress() {
-        findOptional<SwipeRefreshLayout>(R.id.swipeRefresh)
-            ?.isRefreshing = true
+        // progress bar visibility controlled by fragments
     }
 
     override fun hideProgress() {
-        findOptional<SwipeRefreshLayout>(R.id.swipeRefresh)
-            ?.isRefreshing = false
+        // progress bar visibility controlled by fragments
     }
 
     override fun showMessage(message: String) {

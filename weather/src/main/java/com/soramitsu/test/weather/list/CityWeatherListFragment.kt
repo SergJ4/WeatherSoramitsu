@@ -7,12 +7,10 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.PresenterType
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.soramitsu.test.core.base.BaseFragment
-import com.soramitsu.test.core.base.SwipeRefresh
 import com.soramitsu.test.weather.R
 import eu.davidea.flexibleadapter.FlexibleAdapter
 import kotlinx.android.synthetic.main.city_weather_list_layout.*
 import org.kodein.di.Kodein
-import org.kodein.di.generic.instance
 
 class CityWeatherListFragment : BaseFragment(),
     CityWeatherListView {
@@ -31,12 +29,10 @@ class CityWeatherListFragment : BaseFragment(),
     override fun module(): Kodein.Module =
         cityWeatherListModule(kodein)
 
-    private val swipeRefreshListener: SwipeRefresh by instance()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        swipeRefresh.setOnRefreshListener(swipeRefreshListener)
+        swipeRefresh.setOnRefreshListener(presenter.swipeRefreshListener)
 
         if (cityList.adapter == null) {
             cityList.adapter = adapter
