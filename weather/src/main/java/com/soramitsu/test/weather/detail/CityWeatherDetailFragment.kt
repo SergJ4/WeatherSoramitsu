@@ -42,6 +42,7 @@ class CityWeatherDetailFragment : BaseFragment(), CityWeatherDetailView {
             weatherList.layoutManager = LinearLayoutManager(weatherList.context)
         }
 
+        swipeRefresh.setOnRefreshListener(presenter.swipeRefresh)
         backButton.setOnClickListener { presenter.back() }
     }
 

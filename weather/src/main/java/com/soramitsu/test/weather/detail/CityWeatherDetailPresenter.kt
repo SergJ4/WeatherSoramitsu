@@ -3,6 +3,8 @@ package com.soramitsu.test.weather.detail
 import android.content.Context
 import com.arellomobile.mvp.InjectViewState
 import com.soramitsu.test.core.base.BasePresenter
+import com.soramitsu.test.core.base.SwipeRefresh
+import com.soramitsu.test.core.usecase.RefreshWeatherRepo
 import com.soramitsu.test.domain.interfaces.ImageLoader
 import com.soramitsu.test.domain.models.City
 import com.soramitsu.test.domain.models.Weather
@@ -19,6 +21,8 @@ class CityWeatherDetailPresenter(kodein: Kodein) : BasePresenter<CityWeatherDeta
 
     private val cityId: Long by instance(tag = CITY_ID_ARG)
     private val fetchExactCityWeather: FetchExactCityWeather by instance()
+    private val refreshWeatherRepo: RefreshWeatherRepo by instance()
+    internal val swipeRefresh: SwipeRefresh by instance()
 
     init {
         viewState.showProgress()
@@ -27,6 +31,9 @@ class CityWeatherDetailPresenter(kodein: Kodein) : BasePresenter<CityWeatherDeta
                 viewState.hideProgress()
                 viewState.showCity(it)
             }
+
+        executor
+            .executeAsync(refreshWeatherRepo())
     }
 
     private fun createAdapterItems(city: City): List<AbstractFlexibleItem<*>> {
