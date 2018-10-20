@@ -41,6 +41,8 @@ class CityWeatherDetailFragment : BaseFragment(), CityWeatherDetailView {
         if (weatherList.layoutManager == null) {
             weatherList.layoutManager = LinearLayoutManager(weatherList.context)
         }
+
+        backButton.setOnClickListener { presenter.back() }
     }
 
     override fun showCity(items: List<IFlexible<*>>) = adapter.updateDataSet(items)

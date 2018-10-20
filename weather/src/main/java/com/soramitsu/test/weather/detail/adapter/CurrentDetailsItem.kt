@@ -31,7 +31,7 @@ class CurrentDetailsItem(
         }
     internal val pressure: String
         get() {
-            return "${city.currentWeather?.pressure} ${context.getString(R.string.pressure_units)}"
+            return "${city.currentWeather?.pressure?.toInt()} ${context.getString(R.string.pressure_units)}"
         }
     internal val humidity: String
         get() {

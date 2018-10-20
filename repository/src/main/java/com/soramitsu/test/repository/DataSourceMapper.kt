@@ -61,7 +61,7 @@ private val Long.isMidday: Boolean
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = this * 1000
 
-        return calendar.get(Calendar.HOUR_OF_DAY) == 12
+        return calendar.get(Calendar.HOUR_OF_DAY) in (11..13)
     }
 
 //convert from hPa to mmHg St

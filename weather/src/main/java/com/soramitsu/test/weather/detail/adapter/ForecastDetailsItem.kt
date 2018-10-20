@@ -66,5 +66,5 @@ class ForecastDetailsItem(
         adapter: FlexibleAdapter<IFlexible<RecyclerView.ViewHolder>>
     ): ForecastDetailsViewHolder = ForecastDetailsViewHolder(view, adapter)
 
-    override fun getLayoutRes(): Int = R.layout.current_weather_detail_item
+    override fun getLayoutRes(): Int = R.layout.forecast_weather_detail_item
 }

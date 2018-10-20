@@ -15,7 +15,8 @@ import eu.davidea.flexibleadapter.items.IFlexible
 class CityWeatherItem(
     internal val imageLoader: ImageLoader,
     private val city: City,
-    private val context: Context
+    private val context: Context,
+    internal val clickListener: (cityId: Long) -> Unit
 ) : AbstractFlexibleItem<CityWeatherViewHolder>() {
 
     private val currentWeather = city
@@ -23,6 +24,7 @@ class CityWeatherItem(
         .find { it.day == Weather.WeatherDay.CURRENT_WEATHER }
 
     internal val cityName = city.title
+    internal val cityId = city.id
     internal val weatherDescription = currentWeather?.description ?: ""
     internal val temperature: String
         get() {

@@ -1,6 +1,7 @@
 package com.soramitsu.test.weather.detail
 
 import android.content.Context
+import com.arellomobile.mvp.InjectViewState
 import com.soramitsu.test.core.base.BasePresenter
 import com.soramitsu.test.domain.interfaces.ImageLoader
 import com.soramitsu.test.domain.models.City
@@ -13,6 +14,7 @@ import org.kodein.di.Kodein
 import org.kodein.di.direct
 import org.kodein.di.generic.instance
 
+@InjectViewState
 class CityWeatherDetailPresenter(kodein: Kodein) : BasePresenter<CityWeatherDetailView>(kodein) {
 
     private val cityId: Long by instance(tag = CITY_ID_ARG)
@@ -49,4 +51,6 @@ class CityWeatherDetailPresenter(kodein: Kodein) : BasePresenter<CityWeatherDeta
         result.addAll(forecastItems)
         return result
     }
+
+    fun back() = router.back()
 }

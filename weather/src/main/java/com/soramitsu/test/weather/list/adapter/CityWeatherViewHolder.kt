@@ -20,5 +20,8 @@ class CityWeatherViewHolder(view: View, adapter: FlexibleAdapter<*>) :
         cityWeatherItem
             .imageLoader
             .load(weatherIcon, ImageLoaderOptions(resourceUri = cityWeatherItem.icon))
+
+        cityWeatherCard
+            .setOnClickListener { cityWeatherItem.clickListener(cityWeatherItem.cityId) }
     }
 }
