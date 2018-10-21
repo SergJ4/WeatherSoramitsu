@@ -67,3 +67,7 @@
 
 -keepattributes InnerClasses
 -keepattributes EnclosingMethod
+
+-keepclasseswithmembers class com.soramitsu.test.domain.models.** { *; }
+-keepclasseswithmembers class com.soramitsu.test.repository.model.api.** { *; }
+-keepclasseswithmembers class com.soramitsu.test.repository.model.db.** { *; }
