@@ -1,15 +1,12 @@
 package com.soramitsu.test.repository.datasource.api
 
 import android.content.Context
+import com.soramitsu.test.domain.exceptions.NOT_FOUND
 import com.soramitsu.test.domain.exceptions.NetworkErrorException
-import com.soramitsu.test.domain.exceptions.SimpleMessageException
 import com.soramitsu.test.domain.extensions.hasNetwork
-import com.soramitsu.test.repository.R
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
-import java.net.UnknownHostException
-import javax.net.ssl.SSLException
 
 /**
  * Перехватчик для определения наличия сетевого подключения на девайсе
@@ -27,18 +24,15 @@ internal class ConnectivityInterceptor(private val context: Context) : Intercept
         }
 
         val builder = chain.request().newBuilder()
-        try {
-            val response = chain.proceed(builder.build())
-            //Проверяем код ответа на наличие ошибок
-            if ((response.code() >= 400) and (response.code() < 600)) {
+        val response = chain.proceed(builder.build())
+        //Проверяем код ответа на наличие ошибок
+        if ((response.code() >= 400) and (response.code() < 600)) {
+            if (response.code() == 404) {
+                throw NetworkErrorException(NOT_FOUND)
+            } else {
                 throw NetworkErrorException()
             }
-            return response
-        } catch (e: Exception) {
-            when {
-                (e is UnknownHostException || e is SSLException) -> throw NetworkErrorException()
-                else -> throw SimpleMessageException(0, context.getString(R.string.unknown_error))
-            }
         }
+        return response
     }
 }

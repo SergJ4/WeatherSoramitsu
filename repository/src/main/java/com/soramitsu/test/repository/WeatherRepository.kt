@@ -1,9 +1,7 @@
 package com.soramitsu.test.repository
 
 import com.soramitsu.test.domain.SchedulersProvider
-import com.soramitsu.test.domain.exceptions.NetworkConnectionError
-import com.soramitsu.test.domain.exceptions.NetworkErrorException
-import com.soramitsu.test.domain.exceptions.RefreshDataError
+import com.soramitsu.test.domain.exceptions.*
 import com.soramitsu.test.domain.interfaces.ApiErrors
 import com.soramitsu.test.domain.interfaces.Logger
 import com.soramitsu.test.domain.interfaces.WeatherRepository
@@ -68,6 +66,7 @@ class WeatherRepository(
                 handleException(it)
                 currentWeatherError
             }
+            .filter { it != currentWeatherError }
             .doOnSuccess {
                 dbDataSource.addCity(
                     com.soramitsu.test.repository.model.db.City(
@@ -84,7 +83,10 @@ class WeatherRepository(
                         handleException(it)
                         forecastWeatherError
                     }
-                    .doOnSuccess { dbDataSource.insertOrUpdateForecast(listOf(it)) }
+                    .filter { it != forecastWeatherError }
+                    .doOnSuccess {
+                        dbDataSource.insertOrUpdateForecast(listOf(it))
+                    }
             }
             .ignoreElement()
 
@@ -122,10 +124,10 @@ class WeatherRepository(
     private fun handleException(exception: Throwable) {
         logger.logErrorIfDebug(exception)
 
-        val error = if (exception is NetworkErrorException) {
-            NetworkConnectionError
-        } else {
-            RefreshDataError
+        val error = when {
+            exception is NetworkErrorException && exception.code == NOT_FOUND -> ResourceNotFoundError
+            exception is NetworkErrorException -> NetworkConnectionError
+            else -> RefreshDataError
         }
 
         apiErrors(error)

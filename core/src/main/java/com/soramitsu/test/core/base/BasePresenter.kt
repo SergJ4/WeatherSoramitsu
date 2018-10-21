@@ -5,6 +5,7 @@ import com.arellomobile.mvp.MvpPresenter
 import com.soramitsu.test.core.R
 import com.soramitsu.test.domain.exceptions.NetworkConnectionError
 import com.soramitsu.test.domain.exceptions.RefreshDataError
+import com.soramitsu.test.domain.exceptions.ResourceNotFoundError
 import com.soramitsu.test.domain.interfaces.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -44,6 +45,7 @@ abstract class BasePresenter<V : BaseView>(override val kodein: Kodein) : MvpPre
             ) {
                 when (it) {
                     is NetworkConnectionError -> viewState.showMessage(context.getString(R.string.no_network_error))
+                    is ResourceNotFoundError -> viewState.showMessage(context.getString(R.string.city_not_found))
                     is RefreshDataError -> viewState.showMessage(context.getString(R.string.refresh_data_error))
                 }
                 viewState.hideProgress()
