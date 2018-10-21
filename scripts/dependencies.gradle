@@ -18,7 +18,8 @@ ext {
             kodein            : "5.3.0",
             moxy              : "1.5.3",
             room              : "1.1.1",
-            places            : "16.0.0"
+            places            : "16.0.0",
+            multiDex          : "1.0.3"
     ]
 
     //Version
@@ -87,6 +88,8 @@ ext {
 
             playServices       : [
                     places     : "com.google.android.gms:play-services-places:$ver.places"
-            ]
+            ],
+
+             multidex          : "com.android.support:multidex:$ver.multiDex"
     ]
 }

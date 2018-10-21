@@ -8,6 +8,7 @@ import com.soramitsu.test.domain.interfaces.WEATHER_DETAILS_SCREEN
 import com.soramitsu.test.domain.models.City
 import com.soramitsu.test.weather.list.adapter.CityWeatherItem
 import com.soramitsu.test.weather.usecase.FetchCitiesWithWeather
+import com.soramitsu.test.weather.usecase.GooglePlaces
 import org.kodein.di.Kodein
 import org.kodein.di.direct
 import org.kodein.di.generic.instance
@@ -18,6 +19,7 @@ class CityWeatherListPresenter(kodein: Kodein) : BasePresenter<CityWeatherListVi
     private val fetchCitiesWithWeather: FetchCitiesWithWeather by instance()
     private val refreshWeatherRepo: RefreshWeatherRepo by instance()
     internal val swipeRefreshListener: SwipeRefresh by instance()
+    internal val googlePlaces: GooglePlaces by instance()
 
     init {
         viewState.showProgress()
@@ -33,6 +35,11 @@ class CityWeatherListPresenter(kodein: Kodein) : BasePresenter<CityWeatherListVi
 
         executor
             .executeAsync(refreshWeatherRepo())
+
+        executor
+            .executeAsync(googlePlaces.selectedCity()) {
+                //todo
+            }
     }
 
     private fun createItems(cities: List<City>): List<CityWeatherItem> =

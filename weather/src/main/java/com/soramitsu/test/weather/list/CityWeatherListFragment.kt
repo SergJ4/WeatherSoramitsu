@@ -1,10 +1,10 @@
 package com.soramitsu.test.weather.list
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.PresenterType
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.soramitsu.test.core.base.BaseFragment
 import com.soramitsu.test.weather.R
@@ -19,7 +19,7 @@ class CityWeatherListFragment : BaseFragment(),
     @InjectPresenter
     lateinit var presenter: CityWeatherListPresenter
 
-    @ProvidePresenter(type = PresenterType.LOCAL)
+    @ProvidePresenter
     fun presenterProvider() = providePresenter<CityWeatherListPresenter>()
 
     override val layoutRes: Int = R.layout.city_weather_list_layout
@@ -41,6 +41,14 @@ class CityWeatherListFragment : BaseFragment(),
 
         if (cityList.layoutManager == null) {
             cityList.layoutManager = LinearLayoutManager(cityList.context)
+        }
+
+        addCityButton.setOnClickListener { presenter.googlePlaces.showCitiesList(this) }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (!presenter.googlePlaces.onActivityResult(requestCode, resultCode, data, this)) {
+            super.onActivityResult(requestCode, resultCode, data)
         }
     }
 

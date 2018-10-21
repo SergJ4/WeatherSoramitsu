@@ -35,39 +35,37 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "../proguard-rules/main.pro"
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.debug
         }
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(path: ':domain')
     implementation project(path: ':core')
     implementation project(path: ':repository')
     implementation project(path: ':weather')
-
     implementation dep.support.appCompat
-
     implementation dep.kotlin.lib
-
     implementation dep.kodein.lib
     implementation dep.kodein.android
-
     implementation dep.ciceroneNavigator
     implementation dep.rxjava2.lib
-
     implementation dep.timber
-
     implementation dep.moxy.lib
     implementation dep.moxy.android
     kapt dep.moxy.compiler
-
+    implementation dep.multidex
 
     testImplementation testDep.junit
     testImplementation testDep.hamcrest

@@ -1,6 +1,6 @@
 package com.soramitsu.test.weathersoramitsu
 
-import android.app.Application
+import android.support.multidex.MultiDexApplication
 import com.arellomobile.mvp.RegisterMoxyReflectorPackages
 import com.soramitsu.test.repository.RepositoryModule
 import org.kodein.di.Kodein
@@ -8,7 +8,7 @@ import org.kodein.di.KodeinAware
 import timber.log.Timber
 
 @RegisterMoxyReflectorPackages("com.soramitsu.test.weather")
-class App : Application(), KodeinAware {
+class App : MultiDexApplication(), KodeinAware {
 
     override val kodein = Kodein.lazy {
         import(appModule(applicationContext))
