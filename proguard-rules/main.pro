@@ -21,18 +21,11 @@
 # Base components
 -include android.pro
 -include appcompat.pro
--include domain.pro
 
 # Libraries
--include crashlytics.pro
--include facebook.pro
 -include gson.pro
 -include glide.pro
 -include retrofit.pro
--include parceler.pro
--include google-maps.pro
--include core.pro
--include bottomnavigation.pro
 
 -optimizationpasses 5
 -allowaccessmodification
@@ -60,7 +53,7 @@
 -dontwarn android.databinding.tool.**
 -dontwarn io.reactivex.**
 
--dontwarn com.squareup.okhttp.**
+-dontwarn okhttp3.**
 -dontwarn com.squareup.picasso.Transformation
 
 -dontwarn eu.davidea.flexibleadapter.FlexibleAdapter
