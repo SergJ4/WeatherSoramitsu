@@ -1,7 +1,6 @@
 package com.soramitsu.test.weather.detail
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.PresenterType
@@ -36,10 +35,6 @@ class CityWeatherDetailFragment : BaseFragment(), CityWeatherDetailView {
 
         if (weatherList.adapter == null) {
             weatherList.adapter = adapter
-        }
-
-        if (weatherList.layoutManager == null) {
-            weatherList.layoutManager = LinearLayoutManager(weatherList.context)
         }
 
         swipeRefresh.setOnRefreshListener(presenter.swipeRefresh)
