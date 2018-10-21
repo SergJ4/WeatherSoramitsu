@@ -93,7 +93,7 @@ class WeatherRepository(
     override fun refresh(): Completable = dbDataSource
         .getCitiesInDb()
         .filter { it.isNotEmpty() }
-        .flatMapSingle { cities ->
+        .flatMap { cities ->
             apiDataSource
                 .fetchCurrentWeatherForAll(cities)
                 .onErrorReturn {
@@ -110,6 +110,9 @@ class WeatherRepository(
                         currentWeatherList to forecastList
                     }
                 )
+                .filter {
+                    it.first.weatherList.isNotEmpty() && it.second.isNotEmpty()
+                }
                 .doOnSuccess { (currentWeather, forecast) ->
                     if (currentWeather.weatherList.isNotEmpty()) {
                         dbDataSource.insertOrUpdateCurrentWeather(currentWeather.weatherList)

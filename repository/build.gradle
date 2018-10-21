@@ -52,4 +52,10 @@ dependencies {
     implementation dep.retrofit.gson_converter
     implementation dep.retrofit.rxjava_adapter
     implementation dep.retrofit.interceptor
+
+    testImplementation testDep.junit
+    testImplementation testDep.hamcrest
+    testImplementation testDep.kotlinMock
+    testImplementation dep.rxjava2.lib
+    testImplementation dep.rxjava2.android
 }
