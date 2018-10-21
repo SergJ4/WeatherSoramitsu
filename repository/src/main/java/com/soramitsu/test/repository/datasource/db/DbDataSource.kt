@@ -31,6 +31,8 @@ class DbDataSource(private val weatherDao: WeatherDao) {
         weatherDao
             .getAllCities()
 
+    fun addCity(city: City) = weatherDao.addCities(city)
+
     fun insertOrUpdateCurrentWeather(currentWeather: List<ApiCurrentWeatherResponse>) =
         currentWeather
             .map { it.toDatabaseModel() }

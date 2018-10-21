@@ -2,6 +2,7 @@ package com.soramitsu.test.weather.list
 
 import com.soramitsu.test.core.base.SwipeRefresh
 import com.soramitsu.test.core.usecase.RefreshWeatherRepo
+import com.soramitsu.test.weather.usecase.AddCity
 import com.soramitsu.test.weather.usecase.FetchCitiesWithWeather
 import com.soramitsu.test.weather.usecase.GooglePlaces
 import org.kodein.di.Kodein
@@ -33,4 +34,5 @@ fun cityWeatherListModule(
                 instance()
             )
         }
+        bind<AddCity>() with singleton { AddCity(instance(), instance(), instance()) }
     }

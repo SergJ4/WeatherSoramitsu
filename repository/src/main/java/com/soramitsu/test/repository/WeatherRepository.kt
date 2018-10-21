@@ -12,6 +12,8 @@ import com.soramitsu.test.repository.datasource.api.ApiDataSource
 import com.soramitsu.test.repository.datasource.db.DbDataSource
 import com.soramitsu.test.repository.model.api.ApiForecastWeatherResponse
 import com.soramitsu.test.repository.model.api.ApiGroupedWeatherResponse
+import com.soramitsu.test.repository.model.api.currentWeatherError
+import com.soramitsu.test.repository.model.api.forecastWeatherError
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -47,18 +49,6 @@ class WeatherRepository(
                 array.map { it as ApiForecastWeatherResponse }.toList()
             }
 
-    private fun handleException(exception: Throwable) {
-        logger.logErrorIfDebug(exception)
-
-        val error = if (exception is NetworkErrorException) {
-            NetworkConnectionError
-        } else {
-            RefreshDataError
-        }
-
-        apiErrors(error)
-    }
-
     override fun observeCitiesCurrentWeather(): Flowable<List<City>> =
         dbDataSource
             .fetchCurrentWeather()
@@ -70,6 +60,33 @@ class WeatherRepository(
             .map {
                 it.toDomainModel()
             }
+
+    override fun addCity(cityName: String): Completable =
+        apiDataSource
+            .fetchCurrentWeather(cityName)
+            .onErrorReturn {
+                handleException(it)
+                currentWeatherError
+            }
+            .doOnSuccess {
+                dbDataSource.addCity(
+                    com.soramitsu.test.repository.model.db.City(
+                        it.cityId,
+                        it.cityName
+                    )
+                )
+                dbDataSource.insertOrUpdateCurrentWeather(listOf(it))
+            }
+            .flatMap { currentWeatherResponse ->
+                apiDataSource
+                    .fetchForecastWeather(cityId = currentWeatherResponse.cityId)
+                    .onErrorReturn {
+                        handleException(it)
+                        forecastWeatherError
+                    }
+                    .doOnSuccess { dbDataSource.insertOrUpdateForecast(listOf(it)) }
+            }
+            .ignoreElement()
 
     override fun refresh(): Completable = dbDataSource
         .getCitiesInDb()
@@ -101,4 +118,16 @@ class WeatherRepository(
                 }
         }
         .ignoreElement()
+
+    private fun handleException(exception: Throwable) {
+        logger.logErrorIfDebug(exception)
+
+        val error = if (exception is NetworkErrorException) {
+            NetworkConnectionError
+        } else {
+            RefreshDataError
+        }
+
+        apiErrors(error)
+    }
 }

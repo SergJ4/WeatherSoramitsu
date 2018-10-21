@@ -3,6 +3,7 @@ package com.soramitsu.test.weather.usecase
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.support.v4.app.Fragment
+import com.google.android.gms.location.places.AutocompleteFilter
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.soramitsu.test.domain.interfaces.Logger
 import com.soramitsu.test.domain.interfaces.MessageBus
@@ -22,8 +23,14 @@ class GooglePlaces(
     fun showCitiesList(fragment: Fragment) {
         try {
             val activity = fragment.activity
+            val typeFilter = AutocompleteFilter
+                .Builder()
+                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
+                .build()
+
             val intent = PlaceAutocomplete
                 .IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                .setFilter(typeFilter)
                 .build(activity)
 
             fragment.startActivityForResult(intent, requestCode)
@@ -46,9 +53,7 @@ class GooglePlaces(
             val place = PlaceAutocomplete.getPlace(fragment.activity, resultIntent)
             val city = SearchCity(
                 id = place.id,
-                name = place.name.toString(),
-                //todo
-                countryCode = ""
+                name = place.name.toString()
             )
             citySubject.onNext(city)
             true

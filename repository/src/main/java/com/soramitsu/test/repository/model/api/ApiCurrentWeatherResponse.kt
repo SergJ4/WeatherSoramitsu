@@ -17,3 +17,11 @@ data class ApiCurrentWeatherResponse(
     @SerializedName("name")
     val cityName: String
 )
+
+val currentWeatherError = ApiCurrentWeatherResponse(
+    ApiWeatherMainInfo(0f, 0f, 0f),
+    listOf(),
+    ApiWind(0f),
+    cityId = -1,
+    cityName = "error"
+)

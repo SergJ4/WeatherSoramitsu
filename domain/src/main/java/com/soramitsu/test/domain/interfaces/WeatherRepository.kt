@@ -10,5 +10,7 @@ interface WeatherRepository {
 
     fun observeExactCityWeather(cityId: Long): Flowable<City>
 
+    fun addCity(cityName: String): Completable
+
     fun refresh(): Completable
 }

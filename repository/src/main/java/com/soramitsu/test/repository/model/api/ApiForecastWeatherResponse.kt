@@ -8,3 +8,8 @@ data class ApiForecastWeatherResponse(
     @SerializedName("list")
     val forecasts: List<ApiForecastWeather>
 )
+
+val forecastWeatherError = ApiForecastWeatherResponse(
+    ApiCity(-1, "error"),
+    listOf()
+)
