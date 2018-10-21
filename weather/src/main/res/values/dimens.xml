@@ -2,6 +2,7 @@
 <resources>
 
     <dimen name="city_weather_card_height">140dp</dimen>
+    <dimen name="city_weather_card_size_landscape">220dp</dimen>
     <dimen name="city_weather_detail_card_height">260dp</dimen>
     <dimen name="city_weather_card_icon_size">60dp</dimen>
 

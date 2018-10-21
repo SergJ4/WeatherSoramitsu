@@ -2,7 +2,6 @@ package com.soramitsu.test.weather.list
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
@@ -37,10 +36,6 @@ class CityWeatherListFragment : BaseFragment(),
 
         if (cityList.adapter == null) {
             cityList.adapter = adapter
-        }
-
-        if (cityList.layoutManager == null) {
-            cityList.layoutManager = LinearLayoutManager(cityList.context)
         }
 
         addCityButton.setOnClickListener { presenter.googlePlaces.showCitiesList(this) }
