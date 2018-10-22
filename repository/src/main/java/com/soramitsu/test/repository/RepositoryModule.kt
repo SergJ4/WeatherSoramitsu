@@ -7,9 +7,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import com.soramitsu.test.domain.interfaces.Logger
-import com.soramitsu.test.repository.datasource.api.ApiDataSource
-import com.soramitsu.test.repository.datasource.api.ConnectivityInterceptor
-import com.soramitsu.test.repository.datasource.api.WeatherApi
+import com.soramitsu.test.domain.interfaces.Translator
+import com.soramitsu.test.repository.datasource.api.*
 import com.soramitsu.test.repository.datasource.db.DB_NAME
 import com.soramitsu.test.repository.datasource.db.DbDataSource
 import com.soramitsu.test.repository.datasource.db.WeatherDao
@@ -32,6 +31,10 @@ private const val WEATHER_BASE_URL = "https://api.openweathermap.org/data/2.5/"
 const val WEATHER_ICON_URL = "http://openweathermap.org/img/w/"
 private const val HTTP_LOG_TAG = "soramitsu_http"
 private const val NETWORK_TIMEOUT = 6 //seconds
+private const val WEATHER_RETROFIT = "weather"
+private const val TRANSLATOR_RETROFIT = "translator"
+
+private const val TRANSLATION_BASE_URL = "https://translate.yandex.net/api/v1.5/tr.json/"
 
 class RepositoryModule(private val appContext: Context) {
 
@@ -58,8 +61,30 @@ class RepositoryModule(private val appContext: Context) {
 
     val repositoryKodein = Kodein.Module("Repository module") {
 
-        bind<Retrofit>() with singleton { createRetrofit(instance(), instance()) }
-        bind<WeatherApi>() with singleton { instance<Retrofit>().create(WeatherApi::class.java) }
+        bind<Retrofit>(tag = WEATHER_RETROFIT) with singleton {
+            createRetrofit(
+                instance(),
+                instance(),
+                WEATHER_RETROFIT
+            )
+        }
+        bind<Retrofit>(tag = TRANSLATOR_RETROFIT) with singleton {
+            createRetrofit(
+                instance(),
+                instance(),
+                TRANSLATOR_RETROFIT
+            )
+        }
+        bind<WeatherApi>() with singleton {
+            instance<Retrofit>(tag = WEATHER_RETROFIT).create(
+                WeatherApi::class.java
+            )
+        }
+        bind<TranslatorApi>() with singleton {
+            instance<Retrofit>(tag = TRANSLATOR_RETROFIT).create(
+                TranslatorApi::class.java
+            )
+        }
         bind<ApiDataSource>() with singleton { ApiDataSource(instance(), instance()) }
 
         bind<WeatherDb>() with instance(weatherDb)
@@ -75,9 +100,14 @@ class RepositoryModule(private val appContext: Context) {
                 instance()
             )
         }
+        bind<Translator>() with singleton { TranslatorImpl(instance()) }
     }
 
-    private fun createRetrofit(appContext: Context, logger: Logger): Retrofit {
+    private fun createRetrofit(
+        appContext: Context,
+        logger: Logger,
+        type: String
+    ): Retrofit {
         val okHttpBuilder = OkHttpClient.Builder()
 
         val connectivityInterceptor = ConnectivityInterceptor(appContext)
@@ -95,9 +125,15 @@ class RepositoryModule(private val appContext: Context) {
         okHttpBuilder.readTimeout(NETWORK_TIMEOUT.toLong(), TimeUnit.SECONDS)
         okHttpBuilder.writeTimeout(NETWORK_TIMEOUT.toLong(), TimeUnit.SECONDS)
 
+        val baseUrl = if (type == WEATHER_RETROFIT) {
+            WEATHER_BASE_URL
+        } else {
+            TRANSLATION_BASE_URL
+        }
+
         return Retrofit
             .Builder()
-            .baseUrl(WEATHER_BASE_URL)
+            .baseUrl(baseUrl)
             .client(okHttpBuilder.build())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())

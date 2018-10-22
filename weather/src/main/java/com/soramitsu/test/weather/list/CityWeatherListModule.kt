@@ -31,6 +31,7 @@ fun cityWeatherListModule(
         bind<GooglePlaces>() with singleton {
             GooglePlaces(
                 instance(),
+                instance(),
                 instance()
             )
         }
