@@ -21,3 +21,5 @@ Some project considerations:
 9. Project not covered fully with unit tests (unit tests for weather repository available in repository module). And there are no ui tests at all
 
 10. Openweather api does not provide endpoint to fetch all available cities. Only large JSON (minimum 5 Mb), which I don`t want to embed in application. That is why I integrated google places autocomplete widget in order to find cities. And that is why I had to handle "Not found" api error (reuested city is not in openweather database). Moreover google places api returns localized city name (so if device is in russian, then all cities will be in russian) and no way to change this! I had to translate city names that are not in English. Yes, I know that it is overengineering, but this is just test assignment after all. In real life applications backend is more suitable for exact application goal.
+
+11. UI controlled by usecases implicitly.
